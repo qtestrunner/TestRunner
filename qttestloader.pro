@@ -16,7 +16,18 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    qtrunner.cpp
+    qtestcase.cpp \
+    qtestsuit.cpp \
+    testfabric.cpp \
+    qtestloader.cpp \
+    testscaner.cpp
 
 HEADERS += \
-    qtrunner.h
+    qtestcase.h \
+    qtestsuit.h \
+    interfaces/itestcase.h \
+    interfaces/itestsuit.h \
+    interfaces/itestloader.h \
+    testfabric.h \
+    qtestloader.h \
+    testscaner.h
