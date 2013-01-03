@@ -1,9 +1,11 @@
 #include <QDebug>
 #include <QSharedPointer>
+#include <QFile>
 
 #include "qtestloader.h"
+#include "utils/utils.h"
 
-const int max_str_len = 100;
+
 QTestLoader::QTestLoader()
 {
 }
@@ -55,6 +57,11 @@ void QTestLoader::addDataTags(QVector<QSharedPointer<QTestCase> > & cases, const
 QTestLoader::Result QTestLoader::loadTestSuit(const QString & file_name, QSharedPointer<ITestSuit> & suit)
 {
 	QVector<QByteArray> caselist;
+
+	QFileInfo fileinfo(file_name);
+	if (fileinfo.size() == 0)
+		return ResultFailed;
+
 	Result rez;
 	if ((rez = loadCases(file_name, caselist)) != ResultOk) return rez;
 
@@ -69,6 +76,8 @@ QTestLoader::Result QTestLoader::loadTestSuit(const QString & file_name, QShared
 
 	QSharedPointer<QTestSuit> qsuit(new QTestSuit());
 	qsuit->setCases(cases);
+
+	qsuit->setName(fileinfo.baseName().toLatin1());
 	suit = qsuit.staticCast<ITestSuit>();
 
 	return ResultOk;
@@ -80,7 +89,7 @@ QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<
 	args << "-datatags";
 	Result rez;
 	QVector<QByteArray> results;
-	if ((rez = runProcess(file_name, args, results)) != ResultOk) return rez;
+	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 
 	filterResults(results);
 	addDataTags(cases, results);
@@ -88,30 +97,6 @@ QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<
 	return ResultOk;
 }
 
-QTestLoader::Result QTestLoader::runProcess(const QString &file_name, const QStringList & args, QVector<QByteArray> &results)
-{
-	QProcess process;
-	process.setProcessChannelMode(QProcess::MergedChannels);
-	process.start(file_name, args);
-	bool rez = process.waitForFinished();
-
-	if (!rez)
-		return ResultTimeOut;
-
-	int rbt = -1;
-	do
-	{
-		char data[max_str_len];
-
-		rbt = process.readLine(data, max_str_len);
-		if (rbt > 0)
-		{
-			results.push_back(data);
-		}
-	}
-	while(rbt != -1);
-	return ResultOk;
-}
 
 QTestLoader::Result QTestLoader::loadCases(const QString &file_name, QVector<QByteArray> &casesname)
 {
@@ -119,7 +104,7 @@ QTestLoader::Result QTestLoader::loadCases(const QString &file_name, QVector<QBy
 	args << "-functions";
 	Result rez;
 	QVector<QByteArray> results;
-	if ((rez = runProcess(file_name, args, results)) != ResultOk) return rez;
+	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 	filterResults(results);
 
 	casesname = results;

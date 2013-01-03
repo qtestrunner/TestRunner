@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     qtestsuit.cpp \
     testfabric.cpp \
     qtestloader.cpp \
-    testscaner.cpp
+    testscaner.cpp \
+    utils/utils.cpp
 
 HEADERS += \
     qtestcase.h \
@@ -30,4 +31,5 @@ HEADERS += \
     interfaces/itestloader.h \
     testfabric.h \
     qtestloader.h \
-    testscaner.h
+    testscaner.h \
+    utils/utils.h

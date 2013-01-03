@@ -8,9 +8,15 @@
 #include "interfaces/itestsuit.h"
 class TestScaner
 {
-	static void scanFolder(const QString & folder, const QStringList &masks);
+	enum TestType
+	{
+		TestTypeQtTestLib,
+		TestTypeGoogleTest,
+		TestTypeUnKnown
+	};
+	static TestType getTestType(const QString & file);
 public:
-	static void loadFolder(const QString & folder, QList<QSharedPointer<ITestSuit> > & testsuites);
+	static void loadFolder(const QString & folder, const QStringList &masks, QList<QSharedPointer<ITestSuit> > & testsuites);
 };
 
 #endif // TESTSCANER_H
