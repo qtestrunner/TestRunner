@@ -5,6 +5,8 @@
 #include "testfabric.h"
 #include "utils/utils.h"
 
+//-----------------------------------------------------------------------------
+//Check testsuit type
 TestScaner::TestType TestScaner::getTestType(const QString &file)
 {
 	QStringList args;
@@ -23,6 +25,8 @@ TestScaner::TestType TestScaner::getTestType(const QString &file)
 	return TestTypeUnKnown;
 }
 
+//-----------------------------------------------------------------------------
+// Loads all testsuites in folder to vector of ITestSuite
 void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QList<QSharedPointer<ITestSuite> > &testsuites)
 {
 	QDir dir(folder);

@@ -11,9 +11,14 @@ class ITestSuite
 public:
 
 	virtual ~ITestSuite(){};
+
+	/** Return name of test suite
+	 * @return name of test suite
+	 */
 	virtual const QByteArray & getName() = 0;
-	/**
-	 * @return
+
+	/** Return vector of test cases
+	 * @return vector of test cases
 	 */
 	virtual QVector<QSharedPointer<ITestCase> > & getCases() = 0;
 };
