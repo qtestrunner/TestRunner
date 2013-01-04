@@ -19,7 +19,13 @@ public:
 	};
 
 	virtual ~ITestLoader(){};
-	virtual Result loadTestSuit(const QString & file_name, QSharedPointer<ITestSuit> & suit) = 0;
+
+	/** Load all information about test suit
+	 * @param file_name Absolute file name
+	 * @param[out] suit Creates qsharedpointer with suit
+	 * @return Result of operation
+	 */
+	virtual Result loadTestSuit(const QString & file_name, QSharedPointer<ITestSuite> & suit) = 0;
 };
 
 #endif // ITESTLOADER_H

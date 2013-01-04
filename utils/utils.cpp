@@ -5,7 +5,10 @@
 
 namespace Utils
 {
-	const int max_str_len = 100;
+	const int max_str_len = 1000; ///< Max str length while reading
+
+	//--------------------------------------------------------------------------
+	// Run process, with args and save results
 	bool runProcess(const QString &file_name, const QStringList & args, QVector<QByteArray> &results, int timeout)
 	{
 		QProcess process;

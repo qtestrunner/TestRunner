@@ -23,7 +23,7 @@ TestScaner::TestType TestScaner::getTestType(const QString &file)
 	return TestTypeUnKnown;
 }
 
-void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QList<QSharedPointer<ITestSuit> > &testsuites)
+void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QList<QSharedPointer<ITestSuite> > &testsuites)
 {
 	QDir dir(folder);
 	QStringList files = dir.entryList(masks, QDir::Executable | QDir::Files, QDir::Name);
@@ -37,7 +37,7 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 	{
 		QString absfile = dir.absolutePath() + QDir::separator() + file;
 		TestScaner::TestType type = getTestType(absfile);
-		QSharedPointer<ITestSuit> suit;
+		QSharedPointer<ITestSuite> suit;
 		switch(type)
 		{
 			case TestTypeQtTestLib:

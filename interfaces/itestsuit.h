@@ -6,12 +6,15 @@
 
 #include <interfaces/itestcase.h>
 
-class ITestSuit
+class ITestSuite
 {
 public:
 
-	virtual ~ITestSuit(){};
+	virtual ~ITestSuite(){};
 	virtual const QByteArray & getName() = 0;
+	/**
+	 * @return
+	 */
 	virtual QVector<QSharedPointer<ITestCase> > & getCases() = 0;
 };
 #endif // ITESTSUIT_H

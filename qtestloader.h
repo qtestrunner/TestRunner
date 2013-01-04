@@ -9,29 +9,27 @@
 #include "qtestsuit.h"
 #include "qtestcase.h"
 
+/** Class implement #ITestLoader for QtTestLib */
 class QTestLoader: public ITestLoader
 {
 public:
 	QTestLoader();
 	~QTestLoader();
 
-	/** Load all information about test suit
-	 * @param file_name
-	 * @param suit
-	 * @return Result of operation
-	 */
-	Result loadTestSuit(const QString & file_name, QSharedPointer<ITestSuit> & suit);
+	// ITestLoader
+	// Load all information about test suit
+	virtual Result loadTestSuit(const QString & file_name, QSharedPointer<ITestSuite> & suit);
 protected:
 
 	/** Run qtest and fill vector of  testcases names
-	 * @param file_name
-	 * @param casesname
+	 * @param file_name Absolute file name of test suite
+	 * @param[out] casesname
 	 * @return Result of operation
 	 */
 	Result loadCases(const QString & file_name, QVector<QByteArray> &casesname);
 
 	/** Run qtest programm with arg -datatags, and fill cases with datatags
-	 * @param[in] file_name filename of executable
+	 * @param file_name filename of executable
 	 * @param[out] cases fill
 	 * @return Result of operation
 	 */

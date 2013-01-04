@@ -14,6 +14,8 @@ QTestLoader::~QTestLoader()
 {
 }
 
+//------------------------------------------------------------------------------
+// Filter results from #runProcess, make them printable and delete "()"
 void QTestLoader::filterResults(QVector<QByteArray> & data)
 {
 	auto end = data.end();
@@ -32,6 +34,8 @@ void QTestLoader::filterResults(QVector<QByteArray> & data)
 	}
 }
 
+//------------------------------------------------------------------------------
+// Scan results and data tags to testcases
 void QTestLoader::addDataTags(QVector<QSharedPointer<QTestCase> > & cases, const QVector<QByteArray> & results)
 {
 	QVector<QByteArray> tags;
@@ -54,7 +58,9 @@ void QTestLoader::addDataTags(QVector<QSharedPointer<QTestCase> > & cases, const
 	}
 }
 
-QTestLoader::Result QTestLoader::loadTestSuit(const QString & file_name, QSharedPointer<ITestSuit> & suit)
+//------------------------------------------------------------------------------
+//Load all information about test suit
+QTestLoader::Result QTestLoader::loadTestSuit(const QString & file_name, QSharedPointer<ITestSuite> & suit)
 {
 	QVector<QByteArray> caselist;
 
@@ -74,20 +80,21 @@ QTestLoader::Result QTestLoader::loadTestSuit(const QString & file_name, QShared
 
 	loadDataTags(file_name, cases);
 
-	QSharedPointer<QTestSuit> qsuit(new QTestSuit());
+	QSharedPointer<QTestSuite> qsuit(new QTestSuite());
 	qsuit->setCases(cases);
 
 	qsuit->setName(fileinfo.baseName().toLatin1());
-	suit = qsuit.staticCast<ITestSuit>();
+	suit = qsuit.staticCast<ITestSuite>();
 
 	return ResultOk;
 }
 
+//------------------------------------------------------------------------------
+//Run qtest programm with arg -datatags, and fill cases with datatags
 QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<QSharedPointer<QTestCase> > & cases)
 {
 	QStringList args;
 	args << "-datatags";
-	Result rez;
 	QVector<QByteArray> results;
 	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 
@@ -97,12 +104,12 @@ QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<
 	return ResultOk;
 }
 
-
+//------------------------------------------------------------------------------
+// Run qtest and fill vector of  testcases names
 QTestLoader::Result QTestLoader::loadCases(const QString &file_name, QVector<QByteArray> &casesname)
 {
 	QStringList args;
 	args << "-functions";
-	Result rez;
 	QVector<QByteArray> results;
 	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 	filterResults(results);

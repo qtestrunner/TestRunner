@@ -11,9 +11,9 @@ int main(int argc, char *argv[])
 
 	QStringList masks;
 	masks << "ut_*.exe";
-	QList<QSharedPointer<ITestSuit> > testsuites;
+	QList<QSharedPointer<ITestSuite> > testsuites;
 	TestScaner::loadFolder("C:\\Projects\\testfolder", masks, testsuites);
-	foreach(QSharedPointer<ITestSuit> suit, testsuites)
+	foreach(QSharedPointer<ITestSuite> suit, testsuites)
 	{
 		qDebug() << "test suit" << suit->getName();
 		QVector<QSharedPointer<ITestCase> > & cases = suit->getCases();
