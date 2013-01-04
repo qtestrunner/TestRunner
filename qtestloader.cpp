@@ -1,4 +1,4 @@
-#include <QDebug>
+
 #include <QSharedPointer>
 #include <QFile>
 
@@ -97,8 +97,8 @@ QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<
 	QStringList args;
 	args << "-datatags";
 	QVector<QByteArray> results;
-	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 
+	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 	filterResults(results);
 	addDataTags(cases, results);
 
@@ -112,9 +112,10 @@ QTestLoader::Result QTestLoader::loadCases(const QString &file_name, QVector<QBy
 	QStringList args;
 	args << "-functions";
 	QVector<QByteArray> results;
+
 	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 	filterResults(results);
-
 	casesname = results;
+
 	return ResultOk;
 }

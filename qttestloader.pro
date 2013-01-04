@@ -32,4 +32,5 @@ HEADERS += \
     testfabric.h \
     qtestloader.h \
     testscaner.h \
-    utils/utils.h
+    utils/utils.h \
+    utils/log.h

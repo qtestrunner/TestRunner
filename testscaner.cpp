@@ -1,9 +1,9 @@
 #include <QDir>
-#include <QDebug>
 
 #include "testscaner.h"
 #include "testfabric.h"
 #include "utils/utils.h"
+#include "utils/log.h"
 
 //-----------------------------------------------------------------------------
 //Check testsuit type
@@ -49,12 +49,12 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 				if (suit)
 					testsuites.push_back(suit);
 				else
-					qDebug() << "bad test in" << absfile;
+					DEBUG(QString("bad test in ") + absfile);
 			break;
 			case TestTypeGoogleTest:
 			break;
 			case TestTypeUnKnown:
-				qDebug() << "UnKnown type in " << absfile;
+				DEBUG(QString("UnKnown type in ") + absfile);
 			break;
 		}
 	}

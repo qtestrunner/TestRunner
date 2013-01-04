@@ -1,13 +1,11 @@
-#include <QDebug>
-
 #include "qtestcase.h"
+#include "utils/log.h"
 
 //------------------------------------------------------------------------------
 //Constructor with name parametr
 QTestCase::QTestCase(const QByteArray & name)
 	: m_name(name)
 {
-
 }
 
 //------------------------------------------------------------------------------
@@ -21,10 +19,10 @@ void QTestCase::setDataTags(const QVector<QByteArray> & datatags)
 //Prints information about test case, only for debug
 void QTestCase::print()
 {
-	qDebug() << "name" << m_name;
+	DEBUG((QString("name=") + m_name));
 	foreach(QByteArray data, m_datatags)
 	{
-		qDebug() << "tag" << data;
+		DEBUG((QString("tag=") + data));
 	}
 }
 

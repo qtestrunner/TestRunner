@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QtCore>
-#include <QDebug>
 
 #include "testscaner.h"
 #include "interfaces/itestsuit.h"
+#include "utils/log.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,14 +15,14 @@ int main(int argc, char *argv[])
 	TestScaner::loadFolder("C:\\Projects\\testfolder", masks, testsuites);
 	foreach(QSharedPointer<ITestSuite> suit, testsuites)
 	{
-		qDebug() << "test suit" << suit->getName();
+		DEBUG(QString("suit name=")+suit->getName());
 		QVector<QSharedPointer<ITestCase> > & cases = suit->getCases();
 		foreach(QSharedPointer<ITestCase> obj, cases)
 		{
 			obj->print();
 		}
 	}
-	qDebug() << "all done";
+	DEBUG("all done");
 
 	return a.exec();
 }

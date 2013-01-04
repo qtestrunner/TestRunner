@@ -1,7 +1,7 @@
 #include <QProcess>
-#include <QDebug>
 
 #include "utils.h"
+#include "utils/log.h"
 
 namespace Utils
 {
@@ -16,7 +16,7 @@ namespace Utils
 		process.start(file_name, args);
 		if(!process.waitForFinished(timeout))
 		{
-			qDebug() << "run process fail:" << process.readAll();
+			DEBUG(QString("run process fail:") + process.readAll());
 			return false;
 		}
 
