@@ -25,7 +25,7 @@ public:
 	 * @param[out] suit Creates qsharedpointer with suit
 	 * @return Result of operation
 	 */
-	virtual Result loadTestSuit(const QString & file_name, QSharedPointer<ITestSuite> & suit) = 0;
+    virtual Result loadTestSuite(const QString & file_name, QSharedPointer<ITestSuite> & suit) = 0;
 };
 
 #endif // ITESTLOADER_H

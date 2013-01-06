@@ -3,6 +3,7 @@
 
 #include <interfaces/itestcase.h>
 #include <iostream>
+#include <utils/log.h>
 
 class GTest_TestCase : public ITestCase
 {
@@ -16,7 +17,7 @@ public:
     explicit GTest_TestCase (const QByteArray & name);
 
     void print(){
-        std::cout << "not implemented" ;
+        DEBUG((QString("name=") + m_name));
     }
 
     const QByteArray & getName(){

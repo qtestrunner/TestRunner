@@ -33,6 +33,8 @@ public:
 	/** Returns array of test ceses */
 	virtual QVector<QSharedPointer<ITestCase> > & getCases();
 
+    void addTestCase(ITestCasePtr testCase);
+
 };
 
 typedef QSharedPointer<QTestSuite> QTestSuitePtr;

@@ -18,7 +18,7 @@ public:
 
 	// ITestLoader
 	// Load all information about test suit
-	virtual Result loadTestSuit(const QString & file_name, QSharedPointer<ITestSuite> & suit);
+    virtual Result loadTestSuite(const QString & file_name, QSharedPointer<ITestSuite> & suit);
 protected:
 
 	/** Run qtest and fill vector of  testcases names

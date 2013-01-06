@@ -44,3 +44,7 @@ void QTestSuite::setCases(const QVector<QTestCasePtr> & cases)
 	}
 }
 
+void QTestSuite::addTestCase (ITestCasePtr testCase) {
+    m_cases.push_back(testCase);
+}
+

@@ -31,7 +31,10 @@ public:
     void setName(const QByteArray &name);
 
     const QByteArray & getName();
+
     QVector<ITestCasePtr> & getCases();
+
+    void addTestCase (ITestCasePtr testCase);
 };
 
 typedef QSharedPointer<GTest_TestSuite> GT_TestSuitePtr;

@@ -61,7 +61,7 @@ void QTestLoader::addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByte
 
 //------------------------------------------------------------------------------
 //Load all information about test suit
-QTestLoader::Result QTestLoader::loadTestSuit(const QString & file_name, QSharedPointer<ITestSuite> & suit)
+QTestLoader::Result QTestLoader::loadTestSuite(const QString & file_name, QSharedPointer<ITestSuite> & suit)
 {
 	QVector<QByteArray> caselist;
 

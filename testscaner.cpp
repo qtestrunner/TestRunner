@@ -2,6 +2,8 @@
 
 #include "testscaner.h"
 #include "testfabric.h"
+#include "gtest_testsuite.h"
+#include "gtest_testcase.h"
 #include "utils/utils.h"
 #include "utils/log.h"
 
@@ -9,8 +11,9 @@
 //Check testsuit type
 TestScaner::TestType TestScaner::getTestType(const QString &file)
 {
-	QStringList args;
+    QStringList args;
 	args << "/?";
+
 	QVector<QByteArray> results;
 	if(Utils::runProcess(file, args, results))
 	{
@@ -18,6 +21,8 @@ TestScaner::TestType TestScaner::getTestType(const QString &file)
 		{
 			if (arr.contains("QVERIFY/QCOMPARE/QTEST"))
 				return TestTypeQtTestLib;
+            if (arr.contains("Google Test."))
+                return TestTypeGoogleTest;
 		}
 		return TestTypeUnKnown;
 	}
@@ -37,22 +42,45 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 
 	Q_ASSERT(qtloader);
 
+    ITestSuitePtr suite;
+    ITestCasePtr testcase;
+    QVector<QByteArray> listResult;
+    QStringList args;
+
+    DEBUG(QString("detecting tests:"));
 	foreach(QString file, files)
-	{
+    {
 		QString absfile = dir.absolutePath() + QDir::separator() + file;
-		TestScaner::TestType type = getTestType(absfile);
-		QSharedPointer<ITestSuite> suit;
+        TestScaner::TestType type = getTestType(absfile);
 		switch(type)
 		{
 			case TestTypeQtTestLib:
-				qtloader->loadTestSuit(absfile, suit);
-				if (suit)
-					testsuites.push_back(suit);
-				else
+                qtloader->loadTestSuite(absfile, suite);
+                if (suite)
+                    testsuites.push_back(suite);
+                else {
 					DEBUG(QString("bad test in ") + absfile);
-			break;
-			case TestTypeGoogleTest:
-			break;
+                }
+                break;
+            case TestTypeGoogleTest:
+                /** @warning For a while load For GTestSuite Will be there. Do not Remove! */
+
+                args << "--gtest_list_tests";
+
+                Utils::runProcess(absfile, args, listResult);
+                DEBUG(QString("Gtest detected"));
+                foreach(QByteArray line, listResult){
+                    if (line[0] != ' '){
+                        suite = ITestSuitePtr(new GTest_TestSuite);
+                        suite->setName(line.remove(line.length()-1, 1));
+                        testsuites.push_back(suite);
+                    }
+                    else{
+                        testcase = ITestCasePtr(new GTest_TestCase(line.remove(0,2)));
+                        suite->addTestCase(testcase);
+                    }
+                }
+                break;
 			case TestTypeUnKnown:
 				DEBUG(QString("UnKnown type in ") + absfile);
 			break;

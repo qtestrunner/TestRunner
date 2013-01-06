@@ -32,5 +32,5 @@ int main(int argc, char *argv[])
 	}
 	DEBUG("all done");
 
-	return a.exec();
+    return 0;
 }
