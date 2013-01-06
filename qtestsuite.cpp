@@ -1,5 +1,5 @@
 #include "interfaces/itestcase.h"
-#include "qtestsuit.h"
+#include "qtestsuite.h"
 
 //------------------------------------------------------------------------------
 QTestSuite::QTestSuite()
@@ -34,10 +34,10 @@ QVector<QSharedPointer<ITestCase> > & QTestSuite::getCases()
 
 //------------------------------------------------------------------------------
 // Sets array of cases
-void QTestSuite::setCases(const QVector<QSharedPointer<QTestCase> > & cases)
+void QTestSuite::setCases(const QVector<QTestCasePtr> & cases)
 {
 	m_cases.clear();
-	for(auto it = cases.begin();it != cases.end(); ++it)
+    for(QVector<QTestCasePtr>::const_iterator  it = cases.begin();it != cases.end(); ++it)
 	{
 		const QSharedPointer<QTestCase> & p = *it;
 		m_cases.push_back(p.staticCast<ITestCase>());

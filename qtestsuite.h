@@ -4,7 +4,7 @@
 #include <QSharedPointer>
 #include <QByteArray>
 
-#include "interfaces/itestsuit.h"
+#include "interfaces/itestsuite.h"
 #include "qtestcase.h"
 
 /** Class implemet #ITestSuite for QtTestLib */
@@ -34,5 +34,7 @@ public:
 	virtual QVector<QSharedPointer<ITestCase> > & getCases();
 
 };
+
+typedef QSharedPointer<QTestSuite> QTestSuitePtr;
 
 #endif // QTESTSUIT_H

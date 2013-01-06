@@ -3,6 +3,7 @@
 
 #include <QByteArray>
 #include <QVector>
+#include <QSharedPointer>
 
 class ITestCase
 {
@@ -28,5 +29,7 @@ public:
 	 */
 	virtual const QVector<QByteArray> & getDataTags() = 0;
 };
+
+typedef QSharedPointer<ITestCase> ITestCasePtr;
 
 #endif // ITESTCASE_H

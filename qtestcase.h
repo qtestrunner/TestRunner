@@ -36,4 +36,6 @@ public:
 	virtual const QVector<QByteArray> & getDataTags();
 };
 
+typedef QSharedPointer<QTestCase> QTestCasePtr;
+
 #endif // QTESTCASE_H

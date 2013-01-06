@@ -17,20 +17,24 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     qtestcase.cpp \
-    qtestsuit.cpp \
     testfabric.cpp \
     qtestloader.cpp \
     testscaner.cpp \
-    utils/utils.cpp
+    utils/utils.cpp \
+    qtestsuite.cpp \
+    gtest_testsuite.cpp \
+    gtest_testcase.cpp
 
 HEADERS += \
     qtestcase.h \
-    qtestsuit.h \
     interfaces/itestcase.h \
-    interfaces/itestsuit.h \
     interfaces/itestloader.h \
     testfabric.h \
     qtestloader.h \
     testscaner.h \
     utils/utils.h \
-    utils/log.h
+    utils/log.h \
+    qtestsuite.h \
+    interfaces/itestsuite.h \
+    gtest_testsuite.h \
+    gtest_testcase.h

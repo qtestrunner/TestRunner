@@ -2,7 +2,7 @@
 #include <QtCore>
 
 #include "testscaner.h"
-#include "interfaces/itestsuit.h"
+#include "interfaces/itestsuite.h"
 #include "utils/log.h"
 
 int main(int argc, char *argv[])

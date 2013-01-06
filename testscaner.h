@@ -5,7 +5,7 @@
 #include <QList>
 #include <QSharedPointer>
 
-#include "interfaces/itestsuit.h"
+#include "interfaces/itestsuite.h"
 
 /** Static class that loads all tests suits in some folder */
 class TestScaner

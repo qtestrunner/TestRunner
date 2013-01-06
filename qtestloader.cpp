@@ -19,8 +19,8 @@ QTestLoader::~QTestLoader()
 // Filter results from #runProcess, make them printable and delete "()"
 void QTestLoader::filterResults(QVector<QByteArray> & data)
 {
-	auto end = data.end();
-	for (auto it = data.begin(); it != end; ++it)
+    QVector<QByteArray>::iterator end = data.end();
+    for (QVector<QByteArray>::iterator it = data.begin(); it != end; ++it)
 	{
 		QByteArray & arr = *it;
 		for (int i = 0; i < arr.size(); ++i)
@@ -37,10 +37,10 @@ void QTestLoader::filterResults(QVector<QByteArray> & data)
 
 //------------------------------------------------------------------------------
 // Scan results and data tags to testcases
-void QTestLoader::addDataTags(QVector<QSharedPointer<QTestCase> > & cases, const QVector<QByteArray> & results)
+void QTestLoader::addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByteArray> & results)
 {
 	QVector<QByteArray> tags;
-	for (auto it = cases.begin(); it != cases.end(); ++it)
+    for (QVector<QTestCasePtr>::iterator it = cases.begin(); it != cases.end(); ++it)
 	{
 
 		const QByteArray & name = (*it)->getName();

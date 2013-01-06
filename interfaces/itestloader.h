@@ -3,7 +3,7 @@
 
 #include <QSharedPointer>
 
-#include "interfaces/itestsuit.h"
+#include "interfaces/itestsuite.h"
 
 class ITestLoader
 {

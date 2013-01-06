@@ -6,7 +6,7 @@
 #include <QVector>
 
 #include "interfaces/itestloader.h"
-#include "qtestsuit.h"
+#include "qtestsuite.h"
 #include "qtestcase.h"
 
 /** Class implement #ITestLoader for QtTestLib */
