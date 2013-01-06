@@ -8,11 +8,19 @@
 int main(int argc, char *argv[])
 {
 	QCoreApplication a(argc, argv);
-
+    if (a.arguments().count() < 3)
+    {
+        LOG("first argument path, second - mask\n");
+        return 0;
+    }
 	QStringList masks;
-	masks << "ut_*.exe";
+    masks << a.arguments().at(2);
 	QList<QSharedPointer<ITestSuite> > testsuites;
-	TestScaner::loadFolder("C:\\Projects\\testfolder", masks, testsuites);
+	DEBUG("args start");
+	DEBUG(a.arguments());
+	DEBUG("args end");
+
+    TestScaner::loadFolder(a.arguments().at(1), masks, testsuites);
 	foreach(QSharedPointer<ITestSuite> suit, testsuites)
 	{
 		DEBUG(QString("suit name=")+suit->getName());
