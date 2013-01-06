@@ -70,13 +70,15 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
                 Utils::runProcess(absfile, args, listResult);
                 DEBUG(QString("Gtest detected"));
                 foreach(QByteArray line, listResult){
+                    // if there is no spaces - than it is testsuitename
                     if (line[0] != ' '){
                         suite = ITestSuitePtr(new GTest_TestSuite);
-                        suite->setName(line.remove(line.length()-1, 1));
+                        suite->setName(line.remove(line.length()-1, 1)); // remove dot at the end of line
                         testsuites.push_back(suite);
                     }
                     else{
-                        testcase = ITestCasePtr(new GTest_TestCase(line.remove(0,2)));
+                        // this removes first two spaces
+                        testcase = ITestCasePtr(new GTest_TestCase(line.remove(0, 2)));
                         suite->addTestCase(testcase);
                     }
                 }
