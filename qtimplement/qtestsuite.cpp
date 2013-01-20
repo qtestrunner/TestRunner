@@ -3,6 +3,7 @@
 
 //------------------------------------------------------------------------------
 QTestSuite::QTestSuite()
+	: m_runnable(true)
 {
 }
 
@@ -18,6 +19,16 @@ const QByteArray & QTestSuite::getName()
 	return m_name;
 }
 
+void QTestSuite::setRunnable(bool flag)
+{
+	m_runnable = flag;
+}
+
+bool QTestSuite::isRunnable()
+{
+	return m_runnable;
+}
+
 //------------------------------------------------------------------------------
 // Sets name of suite
 void QTestSuite::setName(const QByteArray &name)
@@ -27,9 +38,14 @@ void QTestSuite::setName(const QByteArray &name)
 
 //------------------------------------------------------------------------------
 // Returns array of test ceses
-QVector<QSharedPointer<ITestCase> > & QTestSuite::getCases()
+QVector<ITestCasePtr> &QTestSuite::getCases()
 {
 	return m_cases;
+}
+
+void QTestSuite::addQTestCase(QTestCasePtr testCase)
+{
+	m_cases.push_back(testCase.staticCast<ITestCase>());
 }
 
 //------------------------------------------------------------------------------
@@ -44,7 +60,8 @@ void QTestSuite::setCases(const QVector<QTestCasePtr> & cases)
 	}
 }
 
-void QTestSuite::addTestCase (ITestCasePtr testCase) {
-    m_cases.push_back(testCase);
+void QTestSuite::addTestCase (ITestCasePtr testCase)
+{
+	Q_ASSERT(false);//FIXME:for delete
 }
 

@@ -1,6 +1,6 @@
 #include "testfabric.h"
 
-#include "qtestloader.h"
+#include "qtimplement/qtestloader.h"
 
 //------------------------------------------------------------------------------
 // Creates QtTest Loader

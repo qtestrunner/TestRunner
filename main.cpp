@@ -2,7 +2,7 @@
 #include <QtCore>
 
 #include "testscaner.h"
-#include "interfaces/itestsuite.h"
+#include "interfaces/ifile.h"
 #include "utils/log.h"
 
 int main(int argc, char *argv[])
@@ -15,21 +15,23 @@ int main(int argc, char *argv[])
     }
 	QStringList masks;
     masks << a.arguments().at(2);
-	QList<QSharedPointer<ITestSuite> > testsuites;
-	DEBUG("args start");
-	DEBUG(a.arguments());
-	DEBUG("args end");
+	QList<IFilePtr> testfiles;
 
-    TestScaner::loadFolder(a.arguments().at(1), masks, testsuites);
-	foreach(QSharedPointer<ITestSuite> suit, testsuites)
+	TestScaner::loadFolder(a.arguments().at(1), masks, testfiles);
+	foreach(IFilePtr file, testfiles)
 	{
-		DEBUG(QString("suit name=")+suit->getName());
-		QVector<QSharedPointer<ITestCase> > & cases = suit->getCases();
-		foreach(QSharedPointer<ITestCase> obj, cases)
+		foreach(ITestSuitePtr suit, file->getTestSuites())
 		{
-			obj->print();
+			DEBUG(QString("suit name=") + suit->getName());
+			QVector<ITestCasePtr> & cases = suit->getCases();
+			foreach(ITestCasePtr obj, cases)
+			{
+				obj->print();
+			}
 		}
 	}
+
+
 	DEBUG("all done");
 
     return 0;

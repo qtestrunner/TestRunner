@@ -11,7 +11,8 @@
 class QTestSuite: public ITestSuite
 {
 	QByteArray m_name; ///< Test Suite name
-	QVector<QSharedPointer<ITestCase> > m_cases; ///< Array of test cases
+	QVector<ITestCasePtr> m_cases; ///< Array of test cases
+	bool m_runnable;
 public:
 	QTestSuite();
 	~QTestSuite();
@@ -19,22 +20,28 @@ public:
 	/** Sets array of cases
 	 * @param cases Array of cases
 	 */
-	void setCases(const QVector<QSharedPointer<QTestCase> > & cases);
+	void setCases(const QVector<QTestCasePtr> & cases);
 
 	/** Sets name of suite
 	 * @param name new name of suite
 	 */
-	void setName(const QByteArray &name);
+	virtual	void setName(const QByteArray &name);
 
 	//ITestSuite:
 	/** Returns name os test suite */
 	virtual const QByteArray & getName();
 
+
+	virtual void setRunnable(bool flag);
+
+	virtual bool isRunnable();
+
 	/** Returns array of test ceses */
-	virtual QVector<QSharedPointer<ITestCase> > & getCases();
+	virtual QVector<ITestCasePtr> & getCases();
 
-    void addTestCase(ITestCasePtr testCase);
+	void addQTestCase(QTestCasePtr testCase);
 
+	virtual void addTestCase(ITestCasePtr testCase);//FIXME:deprecated
 };
 
 typedef QSharedPointer<QTestSuite> QTestSuitePtr;

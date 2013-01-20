@@ -32,33 +32,40 @@ TestScaner::TestType TestScaner::getTestType(const QString &file)
 
 //-----------------------------------------------------------------------------
 // Loads all testsuites in folder to vector of ITestSuite
-void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QList<QSharedPointer<ITestSuite> > &testsuites)
+void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QList<IFilePtr> &ifiles)
 {
 	QDir dir(folder);
-	QStringList files = dir.entryList(masks, QDir::Executable | QDir::Files, QDir::Name);
+	QStringList files_list = dir.entryList(masks, QDir::Executable | QDir::Files, QDir::Name);
 
-	QSharedPointer<ITestLoader> qtloader;
+	ITestLoaderPtr qtloader;
 	TestFabric::getQtLoader(qtloader);
+	//!ITestLoaderPtr googleloader; FIXME: I think to do this way
+	//!TestFabric::getGLoader(googleloader);
 
 	Q_ASSERT(qtloader);
+	QList<ITestSuitePtr> google_suites; //FIXME:deprecated
+	ITestSuitePtr google_suite;//FIXME:deprecated
 
-    ITestSuitePtr suite;
-    ITestCasePtr testcase;
-    QVector<QByteArray> listResult;
-    QStringList args;
+	IFilePtr test_file;
+
+	ITestCasePtr testcase;//FIXME:deprecated
+	QVector<QByteArray> listResult;//FIXME:deprecated
+	QStringList args;//FIXME:deprecated
 
     DEBUG(QString("detecting tests:"));
-	foreach(QString file, files)
+	foreach(QString file_name, files_list)
     {
-		QString absfile = dir.absolutePath() + QDir::separator() + file;
+		QString absfile = dir.absolutePath() + QDir::separator() + file_name;
         TestScaner::TestType type = getTestType(absfile);
 		switch(type)
 		{
 			case TestTypeQtTestLib:
-                qtloader->loadTestSuite(absfile, suite);
-                if (suite)
-                    testsuites.push_back(suite);
-                else {
+
+				qtloader->loadFile(absfile, test_file);
+				if (test_file)
+					ifiles.push_back(test_file);
+				else
+				{
 					DEBUG(QString("bad test in ") + absfile);
                 }
                 break;
@@ -72,14 +79,14 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
                 foreach(QByteArray line, listResult){
                     // if there is no spaces - than it is testsuitename
                     if (line[0] != ' '){
-                        suite = ITestSuitePtr(new GTest_TestSuite);
-                        suite->setName(line.remove(line.length()-1, 1)); // remove dot at the end of line
-                        testsuites.push_back(suite);
+						google_suite = ITestSuitePtr(new GTest_TestSuite);
+						google_suite->setName(line.remove(line.length()-1, 1)); // remove dot at the end of line
+						google_suites.push_back(google_suite);
                     }
                     else{
                         // this removes first two spaces
                         testcase = ITestCasePtr(new GTest_TestCase(line.remove(0, 2)));
-                        suite->addTestCase(testcase);
+						google_suite->addTestCase(testcase);
                     }
                 }
                 break;

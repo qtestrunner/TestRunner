@@ -2,8 +2,7 @@
 #define ITESTLOADER_H
 
 #include <QSharedPointer>
-
-#include "interfaces/itestsuite.h"
+#include "interfaces/ifile.h"
 
 class ITestLoader
 {
@@ -18,14 +17,16 @@ public:
 		ResultTimeOut
 	};
 
-	virtual ~ITestLoader(){};
+	virtual ~ITestLoader(){}
 
 	/** Load all information about test suit
 	 * @param file_name Absolute file name
 	 * @param[out] suit Creates qsharedpointer with suit
 	 * @return Result of operation
 	 */
-    virtual Result loadTestSuite(const QString & file_name, QSharedPointer<ITestSuite> & suit) = 0;
+
+	virtual Result loadFile(const QString & file_name, IFilePtr & file) = 0;
 };
+typedef QSharedPointer<ITestLoader> ITestLoaderPtr;
 
 #endif // ITESTLOADER_H

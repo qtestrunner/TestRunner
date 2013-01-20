@@ -18,7 +18,9 @@ public:
 
 	// ITestLoader
 	// Load all information about test suit
-    virtual Result loadTestSuite(const QString & file_name, QSharedPointer<ITestSuite> & suit);
+//	virtual Result loadTestSuite(const QString & file_name, ITestSuitePtr & suit);
+
+	virtual Result loadFile(const QString & file_name, IFilePtr & file_ptr);
 protected:
 
 	/** Run qtest and fill vector of  testcases names
@@ -33,7 +35,7 @@ protected:
 	 * @param[out] cases fill
 	 * @return Result of operation
 	 */
-	Result loadDataTags(const QString & file_name, QVector<QSharedPointer<QTestCase> > & cases);
+	Result loadDataTags(const QString & file_name, QVector<QTestCasePtr> & cases);
 
 	/** Filter results from #runProcess, make them printable and delete "()"
 	 * @param data Run results from #runProcess
@@ -44,7 +46,7 @@ protected:
 	 * @param cases Conteiner of #QTestCase (s)
 	 * @param results results from runing qtest with -datatags(and filtered with #filterResults)
 	 */
-	void addDataTags(QVector<QSharedPointer<QTestCase> > & cases, const QVector<QByteArray> & results);
+	void addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByteArray> & results);
 };
 
 #endif // QTRUNNER_H

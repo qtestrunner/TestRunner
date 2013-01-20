@@ -8,7 +8,7 @@
 class ITestCase
 {
 public:
-	virtual ~ITestCase(){};
+	virtual ~ITestCase(){}
 
 	/** Prints information about test case, only for debug
 	 */
@@ -23,6 +23,10 @@ public:
 	 * @return
 	 */
 	virtual bool hasDataTags() = 0;
+
+	virtual void setRunnable(bool) = 0;
+
+	virtual bool isRunnable() = 0;
 
 	/** Return vector of test case data tags
 	 * @return vector of data tags

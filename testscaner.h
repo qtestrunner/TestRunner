@@ -6,6 +6,7 @@
 #include <QSharedPointer>
 
 #include "interfaces/itestsuite.h"
+#include "interfaces/ifile.h"
 
 /** Static class that loads all tests suits in some folder */
 class TestScaner
@@ -28,7 +29,7 @@ public:
 	 * @param masks masks of testsuits files
 	 * @param[out] testsuites Vector of testsuites
 	 */
-	static void loadFolder(const QString & folder, const QStringList &masks, QList<QSharedPointer<ITestSuite> > & testsuites);
+	static void loadFolder(const QString & folder, const QStringList &masks, QList<IFilePtr> & files);
 };
 
 #endif // TESTSCANER_H

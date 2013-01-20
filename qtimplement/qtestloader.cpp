@@ -3,6 +3,7 @@
 #include <QFile>
 
 #include "qtestloader.h"
+#include "qtestfile.h"
 #include "utils/utils.h"
 
 //------------------------------------------------------------------------------
@@ -61,7 +62,36 @@ void QTestLoader::addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByte
 
 //------------------------------------------------------------------------------
 //Load all information about test suit
-QTestLoader::Result QTestLoader::loadTestSuite(const QString & file_name, QSharedPointer<ITestSuite> & suit)
+//QTestLoader::Result QTestLoader::loadTestSuite(const QString & file_name, ITestSuitePtr & suit)
+//{
+//	QVector<QByteArray> caselist;
+
+//	QFileInfo fileinfo(file_name);
+//	if (fileinfo.size() == 0)
+//		return ResultFailed;
+
+//	Result rez;
+//	if ((rez = loadCases(file_name, caselist)) != ResultOk) return rez;
+
+//	QVector<QSharedPointer<QTestCase> > cases;
+//	foreach(QByteArray casename, caselist)
+//	{
+//		QSharedPointer<QTestCase> caseobj(new QTestCase(casename));
+//		cases.push_back(caseobj);
+//	}
+
+//	loadDataTags(file_name, cases);
+
+//	QSharedPointer<QTestSuite> qsuit(new QTestSuite());
+//	qsuit->setCases(cases);
+
+//	qsuit->setName(fileinfo.baseName().toLatin1());
+//	suit = qsuit.staticCast<ITestSuite>();
+
+//	return ResultOk;
+//}
+
+ITestLoader::Result QTestLoader::loadFile(const QString &file_name, IFilePtr &file_ptr)
 {
 	QVector<QByteArray> caselist;
 
@@ -72,22 +102,26 @@ QTestLoader::Result QTestLoader::loadTestSuite(const QString & file_name, QShare
 	Result rez;
 	if ((rez = loadCases(file_name, caselist)) != ResultOk) return rez;
 
-	QVector<QSharedPointer<QTestCase> > cases;
+	QVector<QTestCasePtr> cases;
 	foreach(QByteArray casename, caselist)
 	{
-		QSharedPointer<QTestCase> caseobj(new QTestCase(casename));
+		QTestCasePtr caseobj(new QTestCase(casename));
 		cases.push_back(caseobj);
 	}
 
 	loadDataTags(file_name, cases);
 
-	QSharedPointer<QTestSuite> qsuit(new QTestSuite());
+	QTestSuitePtr qsuit(new QTestSuite());
 	qsuit->setCases(cases);
 
 	qsuit->setName(fileinfo.baseName().toLatin1());
-	suit = qsuit.staticCast<ITestSuite>();
+
+	QTestFilePtr file(new QTestFile());
+	file->addQTestSuite(qsuit);
+	file_ptr = file.staticCast<IFile>();
 
 	return ResultOk;
+
 }
 
 //------------------------------------------------------------------------------

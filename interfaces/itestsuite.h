@@ -10,7 +10,7 @@ class ITestSuite
 {
 public:
 
-	virtual ~ITestSuite(){};
+	virtual ~ITestSuite(){}
 
 	/** Return name of test suite
 	 * @return name of test suite
@@ -25,12 +25,16 @@ public:
 	/** Return vector of test cases
 	 * @return vector of test cases
 	 */
-	virtual QVector<QSharedPointer<ITestCase> > & getCases() = 0;
+	virtual QVector<ITestCasePtr> & getCases() = 0;
+
+	virtual void setRunnable(bool) = 0;
+
+	virtual bool isRunnable() = 0;
 
     /** Adds testcase to current suite
      * @param testCase pointer to testcase
      */
-    virtual void addTestCase(ITestCasePtr testCase) = 0;
+	virtual void addTestCase(ITestCasePtr testCase) = 0;//FIXME:deprecated
 };
 
 typedef QSharedPointer<ITestSuite> ITestSuitePtr;

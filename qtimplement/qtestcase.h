@@ -8,6 +8,7 @@ class QTestCase: public ITestCase
 {
 	QByteArray m_name; ///< Name of test case
 	QVector<QByteArray> m_datatags;///< Vector of data tags
+	bool m_runnable;
 public:
 	QTestCase();
 	~QTestCase();
@@ -28,6 +29,10 @@ public:
 
 	/** Indicate if test case have data tags */
 	virtual bool hasDataTags();
+
+	virtual void setRunnable(bool flag);
+
+	virtual bool isRunnable();
 
 	/** Returns test case name */
 	virtual const QByteArray & getName();

@@ -10,6 +10,7 @@ class GTest_TestSuite : public ITestSuite
 {
     QByteArray m_name;
     QVector<ITestCasePtr> m_cases;
+	bool m_runnable;
 public:
 
     /*! \brief GTest_TestSuite - Constructor */
@@ -31,6 +32,10 @@ public:
     void setName(const QByteArray &name);
 
     const QByteArray & getName();
+
+	virtual void setRunnable(bool flag);
+
+	virtual bool isRunnable();
 
     QVector<ITestCasePtr> & getCases();
 

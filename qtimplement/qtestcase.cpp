@@ -5,6 +5,7 @@
 //Constructor with name parametr
 QTestCase::QTestCase(const QByteArray & name)
 	: m_name(name)
+	, m_runnable(true)
 {
 }
 
@@ -42,6 +43,7 @@ const QVector<QByteArray> &QTestCase::getDataTags()
 
 //------------------------------------------------------------------------------
 QTestCase::QTestCase()
+	: m_runnable(true)
 {
 }
 
@@ -55,4 +57,14 @@ QTestCase::~QTestCase()
 bool QTestCase::hasDataTags()
 {
 	return !m_datatags.isEmpty();
+}
+
+void QTestCase::setRunnable(bool flag)
+{
+	m_runnable = flag;
+}
+
+bool QTestCase::isRunnable()
+{
+	return m_runnable;
 }
