@@ -11,7 +11,7 @@
 class QTestSuite: public ITestSuite
 {
 	QByteArray m_name; ///< Test Suite name
-	QVector<ITestCasePtr> m_cases; ///< Array of test cases
+	QList<ITestCasePtr> m_cases; ///< Array of test cases
 	bool m_runnable;
 public:
 	QTestSuite();
@@ -20,7 +20,7 @@ public:
 	/** Sets array of cases
 	 * @param cases Array of cases
 	 */
-	void setCases(const QVector<QTestCasePtr> & cases);
+	void setCases(const QList<QTestCasePtr> &cases);
 
 	/** Sets name of suite
 	 * @param name new name of suite
@@ -37,7 +37,7 @@ public:
 	virtual bool isRunnable();
 
 	/** Returns array of test ceses */
-	virtual QVector<ITestCasePtr> & getCases();
+	virtual QList<ITestCasePtr> getCases();
 
 	void addQTestCase(QTestCasePtr testCase);
 

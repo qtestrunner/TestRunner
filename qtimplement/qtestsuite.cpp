@@ -38,7 +38,7 @@ void QTestSuite::setName(const QByteArray &name)
 
 //------------------------------------------------------------------------------
 // Returns array of test ceses
-QVector<ITestCasePtr> &QTestSuite::getCases()
+QList<ITestCasePtr> QTestSuite::getCases()
 {
 	return m_cases;
 }
@@ -50,12 +50,12 @@ void QTestSuite::addQTestCase(QTestCasePtr testCase)
 
 //------------------------------------------------------------------------------
 // Sets array of cases
-void QTestSuite::setCases(const QVector<QTestCasePtr> & cases)
+void QTestSuite::setCases(const QList<QTestCasePtr> & cases)
 {
 	m_cases.clear();
-    for(QVector<QTestCasePtr>::const_iterator  it = cases.begin();it != cases.end(); ++it)
+	for(QList<QTestCasePtr>::const_iterator  it = cases.begin();it != cases.end(); ++it)
 	{
-		const QSharedPointer<QTestCase> & p = *it;
+		const QTestCasePtr & p = *it;
 		m_cases.push_back(p.staticCast<ITestCase>());
 	}
 }

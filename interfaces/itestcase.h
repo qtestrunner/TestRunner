@@ -31,7 +31,7 @@ public:
 	/** Return vector of test case data tags
 	 * @return vector of data tags
 	 */
-	virtual const QVector<QByteArray> & getDataTags() = 0;
+	virtual const QList<QByteArray> getDataTags() = 0;
 };
 
 typedef QSharedPointer<ITestCase> ITestCasePtr;

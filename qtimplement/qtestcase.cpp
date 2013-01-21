@@ -11,7 +11,7 @@ QTestCase::QTestCase(const QByteArray & name)
 
 //------------------------------------------------------------------------------
 //Sets data tags vector for this test case
-void QTestCase::setDataTags(const QVector<QByteArray> & datatags)
+void QTestCase::setDataTags(const QList<QByteArray> & datatags)
 {
 	m_datatags = datatags;
 }
@@ -36,7 +36,7 @@ const QByteArray &QTestCase::getName()
 
 //------------------------------------------------------------------------------
 //Return vector of test case data tags
-const QVector<QByteArray> &QTestCase::getDataTags()
+const QList<QByteArray> QTestCase::getDataTags()
 {
 	return m_datatags;
 }

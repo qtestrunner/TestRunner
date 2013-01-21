@@ -14,6 +14,6 @@ namespace Utils
 	 * @param timeout process time out
 	 * @return Result of operation, may failed with timeout
 	 */
-	bool runProcess(const QString &file_name, const QStringList & args, QVector<QByteArray> &results, int timeout = 10000);
+	bool runProcess(const QString &file_name, const QStringList & args, QList<QByteArray> &results, int timeout = 10000);
 }
 #endif // UTILS_H

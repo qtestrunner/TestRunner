@@ -14,7 +14,7 @@ TestScaner::TestType TestScaner::getTestType(const QString &file)
     QStringList args;
 	args << "/?";
 
-	QVector<QByteArray> results;
+	QList<QByteArray> results;
 	if(Utils::runProcess(file, args, results))
 	{
 		foreach(QByteArray arr, results)
@@ -49,7 +49,7 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 	IFilePtr test_file;
 
 	ITestCasePtr testcase;//FIXME:deprecated
-	QVector<QByteArray> listResult;//FIXME:deprecated
+	QList<QByteArray> listResult;//FIXME:deprecated
 	QStringList args;//FIXME:deprecated
 
     DEBUG(QString("detecting tests:"));

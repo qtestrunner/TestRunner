@@ -10,15 +10,15 @@
 
 class QTestFile : public IFile
 {
-	QList<ITestSuitePtr> m_suites;
+	ITestSuitePtr m_suite;
 public:
 	QTestFile();
 
-	void addQTestSuite(QTestSuitePtr suite);
+	void setQTestSuite(QTestSuitePtr suite);
 
-	virtual void run();
+	virtual void run(QList<TestSuiteResult> & results);
 
-	virtual QList<ITestSuitePtr> & getTestSuites();
+	virtual QList<ITestSuitePtr> getTestSuites();
 
 };
 

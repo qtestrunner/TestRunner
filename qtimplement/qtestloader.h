@@ -28,25 +28,25 @@ protected:
 	 * @param[out] casesname
 	 * @return Result of operation
 	 */
-	Result loadCases(const QString & file_name, QVector<QByteArray> &casesname);
+	Result loadCases(const QString & file_name, QList<QByteArray> &casesname);
 
 	/** Run qtest programm with arg -datatags, and fill cases with datatags
 	 * @param file_name filename of executable
 	 * @param[out] cases fill
 	 * @return Result of operation
 	 */
-	Result loadDataTags(const QString & file_name, QVector<QTestCasePtr> & cases);
+	Result loadDataTags(const QString & file_name, QList<QTestCasePtr> & cases);
 
 	/** Filter results from #runProcess, make them printable and delete "()"
 	 * @param data Run results from #runProcess
 	 */
-	void filterResults(QVector<QByteArray> & data);
+	void filterResults(QList<QByteArray> & data);
 
 	/** Scan results and data tags to testcases
 	 * @param cases Conteiner of #QTestCase (s)
 	 * @param results results from runing qtest with -datatags(and filtered with #filterResults)
 	 */
-	void addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByteArray> & results);
+	void addDataTags(QList<QTestCasePtr> & cases, const QList<QByteArray> & results);
 };
 
 #endif // QTRUNNER_H

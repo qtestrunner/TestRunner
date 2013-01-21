@@ -8,7 +8,7 @@ GTest_TestSuite::~GTest_TestSuite (){
 
 }
 
-QVector<ITestCasePtr>& GTest_TestSuite::getCases ()  {
+QList<ITestCasePtr> GTest_TestSuite::getCases()  {
     return m_cases;
 }
 

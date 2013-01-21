@@ -4,15 +4,16 @@
 #include <QList>
 
 #include "interfaces/itestsuite.h"
+#include "data/testresults.h"
 
 class IFile
 {
 public:
 	~IFile(){}
 
-	virtual void run() = 0;
+	virtual void run(QList<TestSuiteResult> & results) = 0;
 
-	virtual QList<ITestSuitePtr> & getTestSuites() = 0;
+	virtual QList<ITestSuitePtr> getTestSuites() = 0;
 
 };
 

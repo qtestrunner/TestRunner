@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 		foreach(ITestSuitePtr suit, file->getTestSuites())
 		{
 			DEBUG(QString("suit name=") + suit->getName());
-			QVector<ITestCasePtr> & cases = suit->getCases();
-			foreach(ITestCasePtr obj, cases)
+			const QList<ITestCasePtr> & cases = suit->getCases();
+			foreach(const ITestCasePtr & obj, cases)
 			{
 				obj->print();
 			}

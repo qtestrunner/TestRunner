@@ -18,10 +18,10 @@ QTestLoader::~QTestLoader()
 
 //------------------------------------------------------------------------------
 // Filter results from #runProcess, make them printable and delete "()"
-void QTestLoader::filterResults(QVector<QByteArray> & data)
+void QTestLoader::filterResults(QList<QByteArray> & data)
 {
-    QVector<QByteArray>::iterator end = data.end();
-    for (QVector<QByteArray>::iterator it = data.begin(); it != end; ++it)
+	QList<QByteArray>::iterator end = data.end();
+	for (QList<QByteArray>::iterator it = data.begin(); it != end; ++it)
 	{
 		QByteArray & arr = *it;
 		for (int i = 0; i < arr.size(); ++i)
@@ -38,10 +38,10 @@ void QTestLoader::filterResults(QVector<QByteArray> & data)
 
 //------------------------------------------------------------------------------
 // Scan results and data tags to testcases
-void QTestLoader::addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByteArray> & results)
+void QTestLoader::addDataTags(QList<QTestCasePtr> & cases, const QList<QByteArray> & results)
 {
-	QVector<QByteArray> tags;
-    for (QVector<QTestCasePtr>::iterator it = cases.begin(); it != cases.end(); ++it)
+	QList<QByteArray> tags;
+	for (QList<QTestCasePtr>::iterator it = cases.begin(); it != cases.end(); ++it)
 	{
 
 		const QByteArray & name = (*it)->getName();
@@ -93,7 +93,7 @@ void QTestLoader::addDataTags(QVector<QTestCasePtr> & cases, const QVector<QByte
 
 ITestLoader::Result QTestLoader::loadFile(const QString &file_name, IFilePtr &file_ptr)
 {
-	QVector<QByteArray> caselist;
+	QList<QByteArray> caselist;
 
 	QFileInfo fileinfo(file_name);
 	if (fileinfo.size() == 0)
@@ -102,7 +102,7 @@ ITestLoader::Result QTestLoader::loadFile(const QString &file_name, IFilePtr &fi
 	Result rez;
 	if ((rez = loadCases(file_name, caselist)) != ResultOk) return rez;
 
-	QVector<QTestCasePtr> cases;
+	QList<QTestCasePtr> cases;
 	foreach(QByteArray casename, caselist)
 	{
 		QTestCasePtr caseobj(new QTestCase(casename));
@@ -117,7 +117,7 @@ ITestLoader::Result QTestLoader::loadFile(const QString &file_name, IFilePtr &fi
 	qsuit->setName(fileinfo.baseName().toLatin1());
 
 	QTestFilePtr file(new QTestFile());
-	file->addQTestSuite(qsuit);
+	file->setQTestSuite(qsuit);
 	file_ptr = file.staticCast<IFile>();
 
 	return ResultOk;
@@ -126,11 +126,11 @@ ITestLoader::Result QTestLoader::loadFile(const QString &file_name, IFilePtr &fi
 
 //------------------------------------------------------------------------------
 //Run qtest programm with arg -datatags, and fill cases with datatags
-QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<QSharedPointer<QTestCase> > & cases)
+QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QList<QTestCasePtr> & cases)
 {
 	QStringList args;
 	args << "-datatags";
-	QVector<QByteArray> results;
+	QList<QByteArray> results;
 
 	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 	filterResults(results);
@@ -141,11 +141,11 @@ QTestLoader::Result QTestLoader::loadDataTags(const QString &file_name, QVector<
 
 //------------------------------------------------------------------------------
 // Run qtest and fill vector of  testcases names
-QTestLoader::Result QTestLoader::loadCases(const QString &file_name, QVector<QByteArray> &casesname)
+QTestLoader::Result QTestLoader::loadCases(const QString &file_name, QList<QByteArray> &casesname)
 {
 	QStringList args;
 	args << "-functions";
-	QVector<QByteArray> results;
+	QList<QByteArray> results;
 
 	if (!Utils::runProcess(file_name, args, results)) return ResultFailed;
 	filterResults(results);

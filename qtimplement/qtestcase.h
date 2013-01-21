@@ -7,7 +7,7 @@
 class QTestCase: public ITestCase
 {
 	QByteArray m_name; ///< Name of test case
-	QVector<QByteArray> m_datatags;///< Vector of data tags
+	QList<QByteArray> m_datatags;///< Vector of data tags
 	bool m_runnable;
 public:
 	QTestCase();
@@ -21,7 +21,7 @@ public:
 	/** Sets data tags vector for this test case
 	 * @param datatags Vector of data tags
 	 */
-	void setDataTags(const QVector<QByteArray> & datatags);
+	void setDataTags(const QList<QByteArray> &datatags);
 
 	//ITestCase
 	/** Prints information about test case, only for debug */
@@ -38,7 +38,7 @@ public:
 	virtual const QByteArray & getName();
 
 	/** Return vector of test case data tags */
-	virtual const QVector<QByteArray> & getDataTags();
+	virtual const QList<QByteArray> getDataTags();
 };
 
 typedef QSharedPointer<QTestCase> QTestCasePtr;

@@ -9,7 +9,7 @@ namespace Utils
 
 	//--------------------------------------------------------------------------
 	// Run process, with args and save results
-	bool runProcess(const QString &file_name, const QStringList & args, QVector<QByteArray> &results, int timeout)
+	bool runProcess(const QString &file_name, const QStringList & args, QList<QByteArray> &results, int timeout)
 	{
 		QProcess process;
 		process.setProcessChannelMode(QProcess::MergedChannels);

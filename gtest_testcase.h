@@ -8,7 +8,7 @@
 class GTest_TestCase : public ITestCase
 {
     QByteArray m_name ;
-    QVector<QByteArray> m_null;
+	QList<QByteArray> m_null;
 	bool m_runnable;
 public:
     /*!
@@ -33,7 +33,7 @@ public:
 
 	virtual bool isRunnable();
 
-    const QVector<QByteArray> & getDataTags(){
+	const QList<QByteArray> getDataTags(){
         Q_ASSERT_X(false, "NOT ALLOWED","ViacheslavL");
         return m_null;
     }

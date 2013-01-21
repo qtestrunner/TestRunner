@@ -9,7 +9,7 @@
 class GTest_TestSuite : public ITestSuite
 {
     QByteArray m_name;
-    QVector<ITestCasePtr> m_cases;
+	QList<ITestCasePtr> m_cases;
 	bool m_runnable;
 public:
 
@@ -37,7 +37,7 @@ public:
 
 	virtual bool isRunnable();
 
-    QVector<ITestCasePtr> & getCases();
+	QList<ITestCasePtr> getCases();
 
     void addTestCase (ITestCasePtr testCase);
 };
