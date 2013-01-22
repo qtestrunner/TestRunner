@@ -15,3 +15,13 @@ bool GTest_TestCase::isRunnable()
 {
 	return m_runnable;
 }
+
+void GTest_TestCase::setRunnableDataTags(const QList<QByteArray> &tags)
+{
+
+}
+
+const QList<QByteArray> GTest_TestCase::runnableDataTags()
+{
+	return QList<QByteArray>();
+}

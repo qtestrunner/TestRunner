@@ -11,6 +11,8 @@ class IFile
 public:
 	~IFile(){}
 
+	virtual void setAbsFileName(const QString & absname) = 0;
+
 	virtual void run(QList<TestSuiteResult> & results) = 0;
 
 	virtual QList<ITestSuitePtr> getTestSuites() = 0;

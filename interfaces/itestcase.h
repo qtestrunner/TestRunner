@@ -2,7 +2,7 @@
 #define ITESTCASE_H
 
 #include <QByteArray>
-#include <QVector>
+#include <QList>
 #include <QSharedPointer>
 
 class ITestCase
@@ -28,10 +28,14 @@ public:
 
 	virtual bool isRunnable() = 0;
 
+	virtual void setRunnableDataTags(const QList<QByteArray> & tags) = 0;
+
+	virtual const QList<QByteArray> runnableDataTags() = 0;
+
 	/** Return vector of test case data tags
 	 * @return vector of data tags
 	 */
-	virtual const QList<QByteArray> getDataTags() = 0;
+	virtual const QList<QByteArray> getAllDataTags() = 0;
 };
 
 typedef QSharedPointer<ITestCase> ITestCasePtr;

@@ -9,6 +9,7 @@ class QTestCase: public ITestCase
 	QByteArray m_name; ///< Name of test case
 	QList<QByteArray> m_datatags;///< Vector of data tags
 	bool m_runnable;
+	QList<QByteArray> m_runnabletags;
 public:
 	QTestCase();
 	~QTestCase();
@@ -34,11 +35,15 @@ public:
 
 	virtual bool isRunnable();
 
+	virtual void setRunnableDataTags(const QList<QByteArray> & tags);
+
+	virtual const QList<QByteArray> runnableDataTags();
+
 	/** Returns test case name */
 	virtual const QByteArray & getName();
 
 	/** Return vector of test case data tags */
-	virtual const QList<QByteArray> getDataTags();
+	virtual const QList<QByteArray> getAllDataTags();
 };
 
 typedef QSharedPointer<QTestCase> QTestCasePtr;

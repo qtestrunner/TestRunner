@@ -10,10 +10,12 @@ namespace Utils
 	/** Run process, with args and save results,
 	 * @param file_name filename of executable
 	 * @param args args to executable
-	 * @param results stdout and stderr of execute, each
+	 * @param[out] results stdout and stderr of execute, each
 	 * @param timeout process time out
 	 * @return Result of operation, may failed with timeout
 	 */
-	bool runProcess(const QString &file_name, const QStringList & args, QList<QByteArray> &results, int timeout = 10000);
+	bool runProcess(const QString &file_name, const QStringList & args, QList<QByteArray> &results, int timeout = 10000,  const QStringList & environment = QStringList());
+
+	bool runProcess(const QString &file_name, const QStringList & args, QByteArray & results, int timeout = 10000,  const QStringList & environment = QStringList());
 }
 #endif // UTILS_H

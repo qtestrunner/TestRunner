@@ -25,7 +25,7 @@ public:
 	 * @return Result of operation
 	 */
 
-	virtual Result loadFile(const QString & file_name, IFilePtr & file) = 0;
+	virtual Result loadFile(const QString & file_name, IFilePtr & file, const QStringList & environment) = 0;
 };
 typedef QSharedPointer<ITestLoader> ITestLoaderPtr;
 

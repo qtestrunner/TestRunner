@@ -47,6 +47,7 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 	ITestSuitePtr google_suite;//FIXME:deprecated
 
 	IFilePtr test_file;
+	QStringList environment;
 
 	ITestCasePtr testcase;//FIXME:deprecated
 	QList<QByteArray> listResult;//FIXME:deprecated
@@ -61,7 +62,7 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 		{
 			case TestTypeQtTestLib:
 
-				qtloader->loadFile(absfile, test_file);
+				qtloader->loadFile(absfile, test_file, environment);
 				if (test_file)
 					ifiles.push_back(test_file);
 				else

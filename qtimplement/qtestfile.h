@@ -11,15 +11,17 @@
 class QTestFile : public IFile
 {
 	ITestSuitePtr m_suite;
+	QString m_absname;
 public:
 	QTestFile();
 
 	void setQTestSuite(QTestSuitePtr suite);
 
+	virtual void setAbsFileName(const QString & absname);
+
 	virtual void run(QList<TestSuiteResult> & results);
 
 	virtual QList<ITestSuitePtr> getTestSuites();
-
 };
 
 typedef QSharedPointer<QTestFile> QTestFilePtr;

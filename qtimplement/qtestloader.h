@@ -20,7 +20,7 @@ public:
 	// Load all information about test suit
 //	virtual Result loadTestSuite(const QString & file_name, ITestSuitePtr & suit);
 
-	virtual Result loadFile(const QString & file_name, IFilePtr & file_ptr);
+	virtual Result loadFile(const QString & file_name, IFilePtr & file_ptr, const QStringList & environment);
 protected:
 
 	/** Run qtest and fill vector of  testcases names

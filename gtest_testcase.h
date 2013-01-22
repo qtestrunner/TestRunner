@@ -33,7 +33,11 @@ public:
 
 	virtual bool isRunnable();
 
-	const QList<QByteArray> getDataTags(){
+	virtual void setRunnableDataTags(const QList<QByteArray> & tags);
+
+	const QList<QByteArray> runnableDataTags();
+
+	const QList<QByteArray> getAllDataTags(){
         Q_ASSERT_X(false, "NOT ALLOWED","ViacheslavL");
         return m_null;
     }

@@ -4,6 +4,7 @@
 #include "testscaner.h"
 #include "interfaces/ifile.h"
 #include "utils/log.h"
+#include "data/testresults.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,8 +32,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
-
 	DEBUG("all done");
 
-    return 0;
+	QList<TestSuiteResult> results;
+	testfiles.front()->run(results);
+
+	return 0;
 }

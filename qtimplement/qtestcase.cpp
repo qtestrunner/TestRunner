@@ -34,9 +34,28 @@ const QByteArray &QTestCase::getName()
 	return m_name;
 }
 
+void QTestCase::setRunnableDataTags(const QList<QByteArray> & tags)
+{
+	m_runnabletags.clear();
+	foreach(const QByteArray & tag, tags)
+	{
+		if (m_datatags.contains(tag))
+			m_runnabletags.push_back(tag);
+
+	}
+}
+
+const QList<QByteArray> QTestCase::runnableDataTags()
+{
+	if (m_runnabletags.isEmpty())
+		return m_datatags;
+	else
+		return m_runnabletags;
+}
+
 //------------------------------------------------------------------------------
 //Return vector of test case data tags
-const QList<QByteArray> QTestCase::getDataTags()
+const QList<QByteArray> QTestCase::getAllDataTags()
 {
 	return m_datatags;
 }
