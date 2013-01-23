@@ -2,8 +2,8 @@
 
 #include "testscaner.h"
 #include "testfabric.h"
-#include "gtest_testsuite.h"
-#include "gtest_testcase.h"
+#include "gtest_implement/gtest_testsuite.h"
+#include "gtest_implement/gtest_testcase.h"
 #include "utils/utils.h"
 #include "utils/log.h"
 
@@ -39,19 +39,15 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 
 	ITestLoaderPtr qtloader;
 	TestFabric::getQtLoader(qtloader);
-	//!ITestLoaderPtr googleloader; FIXME: I think to do this way
-	//!TestFabric::getGLoader(googleloader);
+    ITestLoaderPtr googleloader;
+    TestFabric::getGLoader(googleloader);
 
-	Q_ASSERT(qtloader);
-	QList<ITestSuitePtr> google_suites; //FIXME:deprecated
-	ITestSuitePtr google_suite;//FIXME:deprecated
+    Q_ASSERT(qtloader);
 
 	IFilePtr test_file;
 	QStringList environment;
 
-	ITestCasePtr testcase;//FIXME:deprecated
-	QList<QByteArray> listResult;//FIXME:deprecated
-	QStringList args;//FIXME:deprecated
+
 
     DEBUG(QString("detecting tests:"));
 	foreach(QString file_name, files_list)
@@ -62,7 +58,7 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
 		{
 			case TestTypeQtTestLib:
 
-				qtloader->loadFile(absfile, test_file, environment);
+                qtloader->loadFile(absfile, test_file, environment);
 				if (test_file)
 					ifiles.push_back(test_file);
 				else
@@ -71,24 +67,12 @@ void TestScaner::loadFolder(const QString &folder, const QStringList &masks, QLi
                 }
                 break;
             case TestTypeGoogleTest:
-                /** @warning For a while load For GTestSuite Will be there. Do not Remove! */
-
-                args << "--gtest_list_tests";
-
-                Utils::runProcess(absfile, args, listResult);
-                DEBUG(QString("Gtest detected"));
-                foreach(QByteArray line, listResult){
-                    // if there is no spaces - than it is testsuitename
-                    if (line[0] != ' '){
-						google_suite = ITestSuitePtr(new GTest_TestSuite);
-						google_suite->setName(line.remove(line.length()-1, 1)); // remove dot at the end of line
-						google_suites.push_back(google_suite);
-                    }
-                    else{
-                        // this removes first two spaces
-                        testcase = ITestCasePtr(new GTest_TestCase(line.remove(0, 2)));
-						google_suite->addTestCase(testcase);
-                    }
+                googleloader->loadFile(absfile, test_file, environment);
+                if (test_file)
+                    ifiles.push_back(test_file);
+                else
+                {
+                    DEBUG(QString("bad test in ") + absfile);
                 }
                 break;
 			case TestTypeUnKnown:

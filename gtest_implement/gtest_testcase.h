@@ -26,7 +26,7 @@ public:
     }
 
     bool hasDataTags(){
-        return false;
+        return false;   ///  Google Test has No DataTags
     }
 
 	virtual void setRunnable(bool flag);

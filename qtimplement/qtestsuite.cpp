@@ -38,7 +38,7 @@ void QTestSuite::setName(const QByteArray &name)
 
 //------------------------------------------------------------------------------
 // Returns array of test ceses
-QList<ITestCasePtr> QTestSuite::getCases()
+QList<ITestCasePtr>& QTestSuite::getCases()
 {
 	return m_cases;
 }

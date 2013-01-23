@@ -25,7 +25,7 @@ public:
 	/** Return vector of test cases
 	 * @return vector of test cases
 	 */
-	virtual QList<ITestCasePtr> getCases() = 0;
+    virtual QList<ITestCasePtr>& getCases() = 0;
 
 	virtual void setRunnable(bool) = 0;
 

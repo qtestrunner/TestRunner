@@ -22,9 +22,11 @@ SOURCES += main.cpp \
     testscaner.cpp \
     utils/utils.cpp \
     qtimplement/qtestsuite.cpp \
-    gtest_testsuite.cpp \
-    gtest_testcase.cpp \
-    qtimplement/qtestfile.cpp
+    gtest_implement/gtest_testsuite.cpp \
+    gtest_implement/gtest_testcase.cpp \
+    qtimplement/qtestfile.cpp \
+    gtest_implement/gtest_loader.cpp \
+    gtest_implement/gtest_file.cpp
 
 HEADERS += \
     qtimplement/qtestcase.h \
@@ -37,8 +39,10 @@ HEADERS += \
     utils/log.h \
     qtimplement/qtestsuite.h \
     interfaces/itestsuite.h \
-    gtest_testsuite.h \
-    gtest_testcase.h \
+    gtest_implement/gtest_testsuite.h \
+    gtest_implement/gtest_testcase.h \
     data/testresults.h \
     interfaces/ifile.h \
-    qtimplement/qtestfile.h
+    qtimplement/qtestfile.h \
+    gtest_implement/gtest_file.h \
+    gtest_implement/gtest_loader.h

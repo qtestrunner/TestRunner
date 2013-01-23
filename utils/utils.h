@@ -4,6 +4,7 @@
 #include <QByteArray>
 #include <QVector>
 #include <QString>
+#include <QStringList>
 
 namespace Utils
 {
@@ -14,8 +15,8 @@ namespace Utils
 	 * @param timeout process time out
 	 * @return Result of operation, may failed with timeout
 	 */
-	bool runProcess(const QString &file_name, const QStringList & args, QList<QByteArray> &results, int timeout = 10000,  const QStringList & environment = QStringList());
+    bool runProcess(const QString &file_name, const QStringList & args, QList<QByteArray> &results, int timeout = 10000,  const QStringList &environment = QStringList() );
 
-	bool runProcess(const QString &file_name, const QStringList & args, QByteArray & results, int timeout = 10000,  const QStringList & environment = QStringList());
+    bool runProcess(const QString &file_name, const QStringList & args, QByteArray & results, int timeout = 10000,  const QStringList &environment = QStringList());
 }
 #endif // UTILS_H

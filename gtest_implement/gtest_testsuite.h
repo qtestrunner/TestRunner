@@ -37,7 +37,7 @@ public:
 
 	virtual bool isRunnable();
 
-	QList<ITestCasePtr> getCases();
+    QList<ITestCasePtr>& getCases();
 
     void addTestCase (ITestCasePtr testCase);
 };
