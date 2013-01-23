@@ -12,6 +12,7 @@ class QTestFile : public IFile
 {
 	ITestSuitePtr m_suite;
 	QString m_absname;
+	void parseResults(const QByteArray & output);
 public:
 	QTestFile();
 

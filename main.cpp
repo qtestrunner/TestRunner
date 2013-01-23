@@ -34,8 +34,13 @@ int main(int argc, char *argv[])
 
 	DEBUG("all done");
 
-	QList<TestSuiteResult> results;
-	testfiles.front()->run(results);
+
+
+	foreach(IFilePtr file, testfiles)
+	{
+		QList<TestSuiteResult> results;
+		file->run(results);
+	}
 
 	return 0;
 }

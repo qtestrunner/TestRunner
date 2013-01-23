@@ -10,6 +10,12 @@
 typedef qint64 TestRunId;
 struct TestCaseResult
 {
+	TestCaseResult()
+		: m_id(0) //Clang insisting
+		, m_result(ResultFalse)
+	{
+	}
+
 	enum Result
 	{
 		ResultTrue,

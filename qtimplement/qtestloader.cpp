@@ -88,6 +88,7 @@ ITestLoader::Result QTestLoader::loadFile(const QString &file_name, IFilePtr &fi
 	QTestFilePtr file(new QTestFile());
 	file->setQTestSuite(qsuit);
 	file_ptr = file.staticCast<IFile>();
+	file_ptr->setAbsFileName(file_name);
 
 	return ResultOk;
 

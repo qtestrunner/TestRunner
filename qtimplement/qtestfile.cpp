@@ -1,7 +1,49 @@
 #include <QDebug>
+#include <QXmlStreamReader>
 
 #include "qtestfile.h"
 #include "utils/utils.h"
+#include "data/testresults.h"
+
+void QTestFile::parseResults(const QByteArray &output)
+{
+	QXmlStreamReader xmlr(output);
+	TestSuiteResult suite;
+
+	while(!xmlr.atEnd() && !xmlr.hasError())
+	{
+			QXmlStreamReader::TokenType token = xmlr.readNext();
+
+			if(token == QXmlStreamReader::StartDocument)
+					continue;
+
+			if(token == QXmlStreamReader::StartElement)
+			{
+					QStringRef tagname = xmlr.name();
+					if (tagname == "TestFunction")
+					{
+//						TestCaseResult caseitem;
+//						caseitem.m_casename = xmlr.attributes().value("name");
+//						suite.m_caseresults.push_back(caseitem);
+					}
+					else if(tagname == "Incident")
+					{
+//						QByteArray rez = xmlr.attributes().value("type");
+//						if (rez == "pass")
+//							suite.m_caseresults.last()->m_result = TestCaseResult::ResultTrue;
+//						else
+//							suite.m_caseresults.last()->m_result = TestCaseResult::ResultFalse;
+					}
+
+			}
+	}
+
+	if(xmlr.hasError())
+	{
+		qDebug() << "Error reading xml" << xmlr.errorString();
+		return;
+	}
+}
 
 QTestFile::QTestFile()
 {
@@ -9,6 +51,7 @@ QTestFile::QTestFile()
 
 void QTestFile::run(QList<TestSuiteResult> & results)
 {
+
 	QStringList args;
 	if (m_suite->isRunnable())
 	{
@@ -42,8 +85,13 @@ void QTestFile::run(QList<TestSuiteResult> & results)
 		}
 	}
 
+	if (args.isEmpty())
+		return;
+
 	QByteArray output;
+	args.insert(0, "-xml");
 	Utils::runProcess(m_absname, args, output);
+	parseResults(output);
 	qDebug() << output;
 }
 
