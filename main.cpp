@@ -33,14 +33,35 @@ int main(int argc, char *argv[])
 	}
 
 	DEBUG("all done");
-
-
-
+	QList<TestSuiteResult> results;
 	foreach(IFilePtr file, testfiles)
-	{
-		QList<TestSuiteResult> results;
 		file->run(results);
+
+	foreach(const TestSuiteResult & result, results)
+	{
+		qDebug() << "suite name = " << result.m_suitename;
+
+		foreach(const TestCaseResult & caseitem, result.m_caseresults)
+		{
+			qDebug() << "case name = " << caseitem.m_casename;
+			if (caseitem.m_result == TestCaseResult::ResultTrue)
+			{
+				qDebug() << "passed";
+			}
+			else
+			{
+				foreach(const Incident & incd, caseitem.m_incidents)
+				{
+					qDebug() << "failed in" << incd.m_file_path << ":" << incd.m_line << "desc:"<< incd.m_description;
+				}
+			}
+
+
+		}
+
+
 	}
+
 
 	return 0;
 }

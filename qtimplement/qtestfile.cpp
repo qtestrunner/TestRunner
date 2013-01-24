@@ -1,14 +1,14 @@
-#include <QDebug>
 #include <QXmlStreamReader>
 
 #include "qtestfile.h"
 #include "utils/utils.h"
+#include "utils/log.h"
 #include "data/testresults.h"
 
-void QTestFile::parseResults(const QByteArray &output)
+void QTestFile::parseResults(const QByteArray &output, TestSuiteResult & suite_result)
 {
 	QXmlStreamReader xmlr(output);
-	TestSuiteResult suite;
+	;
 
 	while(!xmlr.atEnd() && !xmlr.hasError())
 	{
@@ -22,25 +22,41 @@ void QTestFile::parseResults(const QByteArray &output)
 					QStringRef tagname = xmlr.name();
 					if (tagname == "TestFunction")
 					{
-//						TestCaseResult caseitem;
-//						caseitem.m_casename = xmlr.attributes().value("name");
-//						suite.m_caseresults.push_back(caseitem);
+						TestCaseResult caseitem;
+						caseitem.m_casename = xmlr.attributes().value("name").toString();
+						suite_result.m_caseresults.push_back(caseitem);
 					}
 					else if(tagname == "Incident")
 					{
-//						QByteArray rez = xmlr.attributes().value("type");
-//						if (rez == "pass")
-//							suite.m_caseresults.last()->m_result = TestCaseResult::ResultTrue;
-//						else
-//							suite.m_caseresults.last()->m_result = TestCaseResult::ResultFalse;
+						QString rez = xmlr.attributes().value("type").toString();
+						if (rez == "pass")
+						{
+							suite_result.m_caseresults.last().m_result = TestCaseResult::ResultTrue;
+						}
+						else
+						{
+							suite_result.m_caseresults.last().m_result = TestCaseResult::ResultFalse;
+							Incident inc;
+							inc.m_line = xmlr.attributes().value("line").toString().toInt();
+							inc.m_file_path = xmlr.attributes().value("file").toString();
+							suite_result.m_caseresults.last().m_incidents.push_back(inc);
+						}
 					}
+					else if(tagname == "DataTag")
+					{
 
+						suite_result.m_caseresults.last().m_incidents.last().m_tag = xmlr.readElementText();
+					}
+					else if(tagname == "Description")
+					{
+						suite_result.m_caseresults.last().m_incidents.last().m_description = xmlr.readElementText();
+					}
 			}
 	}
 
 	if(xmlr.hasError())
 	{
-		qDebug() << "Error reading xml" << xmlr.errorString();
+		LOG(xmlr.errorString());
 		return;
 	}
 }
@@ -51,6 +67,8 @@ QTestFile::QTestFile()
 
 void QTestFile::run(QList<TestSuiteResult> & results)
 {
+	TestSuiteResult suite_result;
+	suite_result.m_suitename = m_suite->getName();
 
 	QStringList args;
 	if (m_suite->isRunnable())
@@ -90,9 +108,10 @@ void QTestFile::run(QList<TestSuiteResult> & results)
 
 	QByteArray output;
 	args.insert(0, "-xml");
-	Utils::runProcess(m_absname, args, output);
-	parseResults(output);
-	qDebug() << output;
+	if(Utils::runProcess(m_absname, args, output))
+		parseResults(output, suite_result);
+
+	results.push_back(suite_result);
 }
 
 QList<ITestSuitePtr> QTestFile::getTestSuites()

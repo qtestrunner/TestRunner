@@ -41,5 +41,5 @@ ITestLoader::Result GTest_Loader::loadFile(const QString &file_name, IFilePtr &f
     GTest_FilePtr gfile(new GTest_File());
     gfile->setTestSuites(gtest_suites);
     file = gfile.staticCast<IFile>();
-
+	return ResultOk;
 }
