@@ -2,7 +2,7 @@
 
 #include "testkeeper.h"
 
-class TempTestDataKeeper
+class TempTestDataKeeper//TEMP object only for debug
 {
 	Q_DISABLE_COPY(TempTestDataKeeper)
 	TempTestDataKeeper()
@@ -11,7 +11,7 @@ class TempTestDataKeeper
 
 public:
 	QMap<TestRunId, TestSuiteResultPtr> db;
-	TempTestDataKeeper & instance()
+	static TempTestDataKeeper & instance()
 	{
 		static TempTestDataKeeper t;
 		return t;
@@ -24,7 +24,7 @@ ECode TestKeeper::saveSuites(const QList<TestSuiteResultPtr> &suit_results)
 	TempTestDataKeeper & keeper = TempTestDataKeeper::instance();
 	foreach(const TestSuiteResultPtr & result, suit_results)
 	{
-		keeper.db.insert(result->m_id, keeper);
+		keeper.db.insert(result->m_id, result);
 	}
 
 	return EOk;
@@ -34,8 +34,8 @@ ECode TestKeeper::loadSuites(QList<TestSuiteResultPtr> &suit_results, const Sear
 {
 
 	TempTestDataKeeper & keeper = TempTestDataKeeper::instance();
-	keeper.db.find
-//suit_results
+
+
 	return EOk;
 }
 
