@@ -40,5 +40,6 @@ struct TestSuiteResult
 	QDateTime m_dt_start;
 	QDateTime m_dt_stop;
 };
+typedef QSharedPointer<TestSuiteResult> TestSuiteResultPtr;
 
 #endif // TESTRESULTS_H
