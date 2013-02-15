@@ -4,6 +4,8 @@
 enum ECode
 {
 	EOk,
+	EDbOpenFatalError,
+	EDbSQlExecError,
 	EUnKnown
 };
 

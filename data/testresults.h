@@ -21,13 +21,26 @@ struct TestCaseResult
 {
 	enum Result
 	{
-		ResultTrue,
-		ResultFalse
+		ResultFalse = 0,
+		ResultTrue = 1
 	};
+	enum Status
+	{
+		StatusAccepted = 0,
+		StatusSolved = 1,
+		StatusRejected = 2
+	};
+	TestCaseResult()
+		: m_status(StatusAccepted)
+		, m_result(ResultTrue)
+	{
+	}
+
 	QList<Incident> m_incidents;
 	QString m_casename;
 	TestRunId m_id;
 	Result m_result;
+	Status m_status;
 	QDateTime m_dt_start;
 	QDateTime m_dt_stop;
 };

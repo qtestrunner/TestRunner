@@ -5,6 +5,7 @@
 #include "interfaces/ifile.h"
 #include "utils/log.h"
 #include "data/testresults.h"
+#include "data/testkeeper.h"
 
 int main(int argc, char *argv[])
 {
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
 
 
 	}
-
+	TestKeeper::saveSuites(results);
 
 	return 0;
 }

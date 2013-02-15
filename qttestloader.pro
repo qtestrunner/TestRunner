@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core
+QT       += core sql
 
 QT       -= gui
 
@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     qtimplement/qtestfile.cpp \
     gtest_implement/gtest_loader.cpp \
     gtest_implement/gtest_file.cpp \
-    data/testkeeper.cpp
+    data/testkeeper.cpp \
+    data/databasemanager.cpp
 
 HEADERS += \
     qtimplement/qtestcase.h \
@@ -48,4 +49,5 @@ HEADERS += \
     gtest_implement/gtest_file.h \
     gtest_implement/gtest_loader.h \
     data/testkeeper.h \
-    utils/errorcodes.h
+    utils/errorcodes.h \
+    data/databasemanager.h

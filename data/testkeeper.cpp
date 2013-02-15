@@ -1,45 +1,23 @@
 #include <QMap>
 
 #include "testkeeper.h"
+#include "databasemanager.h"
 
-class TempTestDataKeeper//TEMP object only for debug
+ECode TestKeeper::saveSuites(const QList<TestSuiteResult> &suit_results)
 {
-	Q_DISABLE_COPY(TempTestDataKeeper)
-	TempTestDataKeeper()
-	{
-	}
-
-public:
-	QMap<TestRunId, TestSuiteResultPtr> db;
-	static TempTestDataKeeper & instance()
-	{
-		static TempTestDataKeeper t;
-		return t;
-	}
-};
-
-
-ECode TestKeeper::saveSuites(const QList<TestSuiteResultPtr> &suit_results)
-{
-	TempTestDataKeeper & keeper = TempTestDataKeeper::instance();
-	foreach(const TestSuiteResultPtr & result, suit_results)
-	{
-		keeper.db.insert(result->m_id, result);
-	}
-
+	DatabaseManager & db = DatabaseManager::instance();
 	return EOk;
 }
 
-ECode TestKeeper::loadSuites(QList<TestSuiteResultPtr> &suit_results, const SearchParams & params)
+ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchParams & params)
 {
 
-	TempTestDataKeeper & keeper = TempTestDataKeeper::instance();
-
-
+	DatabaseManager & db = DatabaseManager::instance();
 	return EOk;
 }
 
-ECode TestKeeper::updateSuites(QList<TestSuiteResultPtr> &new_suit_results, const SearchParams &params)
+ECode TestKeeper::updateSuites(QList<TestSuiteResult> &new_suit_results, const SearchParams &params)
 {
+	DatabaseManager & db = DatabaseManager::instance();
 	return EOk;
 }
