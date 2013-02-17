@@ -2,6 +2,7 @@
 #define TESTRESULTS_H
 
 #include <QSharedPointer>
+#include <QUuid>
 #include <QList>
 #include <QString>
 #include <QDateTime>
@@ -11,10 +12,21 @@ typedef qint64 TestRunId;
 
 struct Incident
 {
+	enum Status
+	{
+		StatusAccepted,
+		StatusRejected,
+		StatusNew
+	};
+
 	QString m_file_path;
 	QString m_description;
-	QString m_tag;
+	QString m_tagname;
+	QDateTime m_dt_start;
+	QDateTime m_dt_stop;
+	Status m_status;
 	int m_line;
+
 };
 
 struct TestCaseResult
@@ -36,22 +48,21 @@ struct TestCaseResult
 	{
 	}
 
-	QList<Incident> m_incidents;
 	QString m_casename;
-	TestRunId m_id;
-	Result m_result;
 	Status m_status;
+	Result m_result;
 	QDateTime m_dt_start;
 	QDateTime m_dt_stop;
+	QList<Incident> m_incedents;
 };
 
 struct TestSuiteResult
 {
-	TestRunId m_id;
+	QUuid m_uid;
 	QString m_suitename;
-	QList<TestCaseResult> m_caseresults;
 	QDateTime m_dt_start;
 	QDateTime m_dt_stop;
+	QList<TestCaseResult> m_caseresults;
 };
 typedef QSharedPointer<TestSuiteResult> TestSuiteResultPtr;
 

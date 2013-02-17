@@ -39,17 +39,17 @@ void QTestFile::parseResults(const QByteArray &output, TestSuiteResult & suite_r
 							Incident inc;
 							inc.m_line = xmlr.attributes().value("line").toString().toInt();
 							inc.m_file_path = xmlr.attributes().value("file").toString();
-							suite_result.m_caseresults.last().m_incidents.push_back(inc);
+							suite_result.m_caseresults.last().m_incedents.push_back(inc);
 						}
 					}
 					else if(tagname == "DataTag")
 					{
 
-						suite_result.m_caseresults.last().m_incidents.last().m_tag = xmlr.readElementText();
+						suite_result.m_caseresults.last().m_incedents.last().m_tagname = xmlr.readElementText();
 					}
 					else if(tagname == "Description")
 					{
-						suite_result.m_caseresults.last().m_incidents.last().m_description = xmlr.readElementText();
+						suite_result.m_caseresults.last().m_incedents.last().m_description = xmlr.readElementText();
 					}
 			}
 	}
@@ -69,11 +69,11 @@ void QTestFile::run(QList<TestSuiteResult> & results)
 {
 	TestSuiteResult suite_result;
 	suite_result.m_suitename = m_suite->getName();
+	suite_result.m_uid = QUuid::createUuid();
 
 	QStringList args;
 	if (m_suite->isRunnable())
 	{
-
 		QList<ITestCasePtr> & cases = m_suite->getCases();
 		foreach(const ITestCasePtr & caseitem, cases)
 		{

@@ -15,6 +15,8 @@ public:
 	static DatabaseManager & instance();
 	QSqlDatabase db;
 	QSqlQuery insertSuites;
+	QSqlQuery insertCases;
+	QSqlQuery inserIncidents;
 signals:
 	
 public slots:

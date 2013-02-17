@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				foreach(const Incident & incd, caseitem.m_incidents)
+				foreach(const Incident & incd, caseitem.m_incedents)
 				{
 					qDebug() << "failed in" << incd.m_file_path << ":" << incd.m_line << "desc:"<< incd.m_description;
 				}
