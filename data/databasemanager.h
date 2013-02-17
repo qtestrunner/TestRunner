@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlTableModel>
 
 #include "utils/errorcodes.h"
 
@@ -14,9 +15,12 @@ public:
 
 	static DatabaseManager & instance();
 	QSqlDatabase db;
+
+	QSqlTableModel suitesTable;
 	QSqlQuery insertSuites;
 	QSqlQuery insertCases;
 	QSqlQuery inserIncidents;
+
 signals:
 	
 public slots:

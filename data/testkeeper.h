@@ -8,9 +8,10 @@
 
 struct SearchParams
 {
-	qint64 runId;
+	QUuid runuid;
 	QDateTime m_startdate;
 	QDateTime m_stopdate;
+	TestCaseResult::Status stauts;
 };
 
 class TestKeeper

@@ -74,6 +74,8 @@ ECode DatabaseManager::init()
 		DEBUG(insertCases.lastError().text());
 		return EDbOpenFatalError;
 	}
+	suitesTable = QSqlTableModel(0, db);
+
 
 	m_state = StateOk;
 	return EOk;

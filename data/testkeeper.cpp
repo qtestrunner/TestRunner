@@ -13,6 +13,8 @@ ECode TestKeeper::saveSuites(const QList<TestSuiteResult> &suit_results)
 	QSqlDatabase & db = manager.db;
 	QUuid runuid;
 
+	manager.
+
 	db.transaction();
 	QSqlQuery qr;
 
@@ -73,7 +75,17 @@ ECode TestKeeper::saveSuites(const QList<TestSuiteResult> &suit_results)
 
 ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchParams & params)
 {
-	DatabaseManager & manager = DatabaseManager::instance();
+//	DatabaseManager & manager = DatabaseManager::instance();
+//	if (params.runId != QUuid())
+//	{
+//		QString qrsql("select * from")
+//		 qr(manager.db);
+
+//		{
+
+//		}
+//	}
+
 	return EOk;
 }
 
