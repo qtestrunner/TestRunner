@@ -10,6 +10,7 @@
 int main(int argc, char *argv[])
 {
 	QCoreApplication a(argc, argv);
+
     if (a.arguments().count() < 3)
     {
         LOG("first argument path, second - mask\n");
@@ -62,6 +63,8 @@ int main(int argc, char *argv[])
 
 
 	}
+
+	TRACE("Try to save");
 	TestKeeper::saveSuites(results);
 
 	return 0;

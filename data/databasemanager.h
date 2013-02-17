@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
+
 #include "utils/errorcodes.h"
 
 class DatabaseManager : public QObject
@@ -11,6 +13,8 @@ class DatabaseManager : public QObject
 public:
 
 	static DatabaseManager & instance();
+	QSqlDatabase db;
+	QSqlQuery insertSuites;
 signals:
 	
 public slots:
@@ -21,12 +25,12 @@ private:
 		StateNon,
 		StateOk
 	};
-	State m_state;
 
 	ECode init();
 	ECode createTables(QSqlDatabase & db);
+	State m_state;
 	explicit DatabaseManager(QObject *parent = 0);
-	
+
 };
 
 #endif // DATABASEMANAGER_H
