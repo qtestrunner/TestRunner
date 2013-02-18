@@ -1,6 +1,7 @@
 #include <QMap>
 #include <QSqlError>
 #include <QUuid>
+#include <QSqlRecord>
 
 #include "testkeeper.h"
 #include "databasemanager.h"
@@ -10,66 +11,84 @@
 ECode TestKeeper::saveSuites(const QList<TestSuiteResult> &suit_results)
 {
 	DatabaseManager & manager = DatabaseManager::instance();
-	QSqlDatabase & db = manager.db;
-	QUuid runuid;
+	QSharedPointer<QSqlTableModel> suitesTable;
+	manager.getSuitesModel(suitesTable);
 
-	manager.
+	QSharedPointer<QSqlRelationalTableModel> casesTable;
+	manager.getCasesModel(casesTable);
 
-	db.transaction();
-	QSqlQuery qr;
+	QSharedPointer<QSqlRelationalTableModel> incidentsTable;
+	manager.getIncidentsModel(incidentsTable);
 
 	foreach(const TestSuiteResult & suite, suit_results)
 	{
-		qr = manager.insertSuites;
-		qr.bindValue(":suitename", suite.m_suitename);
-		runuid = suite.m_uid;
-		qr.bindValue(":testrunuid", runuid.toByteArray());
-		qr.bindValue(":dtstart", suite.m_dt_start.toMSecsSinceEpoch());
-		qr.bindValue(":dtstop", suite.m_dt_stop.toMSecsSinceEpoch());
-		if (!qr.exec())
+		QSqlRecord rd(suitesTable->record());
+		QByteArray runuid = suite.m_uid.toByteArray();
+		rd.setValue("suitename", suite.m_suitename);
+		rd.setValue("testrunuid", runuid);
+		rd.setValue("dtstart", suite.m_dt_start.toMSecsSinceEpoch());
+		rd.setValue("dtstop", suite.m_dt_stop.toMSecsSinceEpoch());
+		if(!suitesTable->insertRecord(-1, rd))
 		{
-			DEBUG(qr.lastError().text());
+			DEBUG(suitesTable->lastError().text());
 			return EDbSQlExecError;
 		}
-		QVariant suite_id = qr.lastInsertId();
+		if(!suitesTable->submitAll())
+		{
+			DEBUG(suitesTable->lastError().text());
+			return EDbSQlExecError;
+		}
 
+		int suiteid = suitesTable->query().lastInsertId().toInt();
+		DEBUG(suiteid);
 		foreach(const TestCaseResult & caseresult, suite.m_caseresults)
 		{
-			qr = manager.insertCases;
-			qr.bindValue(":casename", caseresult.m_casename);
-			qr.bindValue(":testrunid", runuid.toByteArray());
-			qr.bindValue(":result", caseresult.m_result);
-			qr.bindValue(":dtstop", caseresult.m_dt_stop);
-			qr.bindValue(":status", caseresult.m_status);
-			qr.bindValue(":suiteid", suite_id);
-			qr.bindValue(":dtstart", caseresult.m_dt_start);
-			if (!qr.exec())
+			QSqlRecord crd(casesTable->record());
+			crd.setValue("casename", caseresult.m_casename);
+			crd.setValue("testrunuid", runuid);
+			crd.setValue("result", caseresult.m_result);
+			crd.setValue("dtstart", caseresult.m_dt_start);
+			crd.setValue("dtstop", caseresult.m_dt_stop);
+			crd.setValue("status", caseresult.m_status);
+			crd.setValue("suiteid", suiteid);
+			if(!casesTable->insertRecord(-1, crd))
 			{
-				DEBUG(qr.lastError().text());
+				DEBUG(casesTable->lastError().text());
 				return EDbSQlExecError;
 			}
-			QVariant caseid =  qr.lastInsertId();
+			if(!casesTable->submitAll())
+			{
+				DEBUG(casesTable->lastError().text());
+				return EDbSQlExecError;
+			}
+
+			int caseid = casesTable->query().lastInsertId().toInt();
 			foreach(const Incident & incedent, caseresult.m_incedents)
 			{
-				qr = manager.inserIncidents;
-				qr.bindValue(":caseid", caseid);
-				qr.bindValue(":testrunid", runuid.toByteArray());
-				qr.bindValue(":tagname", incedent.m_tagname);
-				qr.bindValue(":description", incedent.m_description);
-				qr.bindValue(":filepath", incedent.m_file_path);
-				qr.bindValue(":line", incedent.m_line);
-				qr.bindValue(":dtstart", incedent.m_dt_start);
-				qr.bindValue(":dtstop", incedent.m_dt_stop);
-				qr.bindValue(":status", incedent.m_status);
-				if (!qr.exec())
+				QSqlRecord ird(casesTable->record());
+				ird.setValue("caseid", caseid);
+				ird.setValue("testrunuid", runuid);
+				ird.setValue("tagname", incedent.m_tagname);
+				ird.setValue("description", incedent.m_description);
+				ird.setValue("filepath", incedent.m_file_path);
+				ird.setValue("line", incedent.m_line);
+				ird.setValue("status", incedent.m_status);
+				ird.setValue("dtstart", incedent.m_dt_start);
+				ird.setValue("dtstop", incedent.m_dt_stop);
+				if(!incidentsTable->insertRecord(-1, ird))
 				{
-					DEBUG(qr.lastError().text());
+					DEBUG(incidentsTable->lastError().text());
 					return EDbSQlExecError;
 				}
+				if(!incidentsTable->submitAll())
+				{
+					DEBUG(incidentsTable->lastError().text());
+					return EDbSQlExecError;
+				}
+
 			}
 		}
 	}
-	db.commit();
 	return EOk;
 }
 

@@ -19,6 +19,10 @@ DatabaseManager &DatabaseManager::instance()
 	return manager;
 }
 
+void DatabaseManager::getSuitesModel(QSharedPointer<QSqlTableModel> &ptr)
+{
+	ptr = DatabaseManager::instance().m_suitesTable;
+}
 
 ECode DatabaseManager::init()
 {
@@ -74,8 +78,20 @@ ECode DatabaseManager::init()
 		DEBUG(insertCases.lastError().text());
 		return EDbOpenFatalError;
 	}
-	suitesTable = QSqlTableModel(0, db);
 
+	m_suitesTable = QSharedPointer<QSqlTableModel>(new QSqlTableModel(0, db));
+	m_suitesTable->setTable("results_suites");
+	m_suitesTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+	m_casesTable = QSharedPointer<QSqlRelationalTableModel>(new QSqlRelationalTableModel(0, db));
+	m_casesTable->setTable("results_cases");
+	m_casesTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
+	m_casesTable->setRelation(m_casesTable->fieldIndex("suiteid"), QSqlRelation("results_suites", "id", "suitename"));
+
+	m_incidentsTable = QSharedPointer<QSqlRelationalTableModel>(new QSqlRelationalTableModel(0, db));
+	m_incidentsTable->setTable("results_incidents");
+	m_incidentsTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
+	m_incidentsTable->setRelation(m_incidentsTable->fieldIndex("caseid"), QSqlRelation("results_cases", "id", "casename"));
 
 	m_state = StateOk;
 	return EOk;
@@ -110,3 +126,13 @@ ECode DatabaseManager::createTables(QSqlDatabase & db)
 	return EOk;
 }
 
+void DatabaseManager::getIncidentsModel(QSharedPointer<QSqlRelationalTableModel> &ptr)
+{
+	ptr = DatabaseManager::instance().m_incidentsTable;
+}
+
+
+void DatabaseManager::getCasesModel(QSharedPointer<QSqlRelationalTableModel> &ptr)
+{
+	ptr = DatabaseManager::instance().m_casesTable;
+}

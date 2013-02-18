@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
+#include <QSharedPointer>
 
 #include "utils/errorcodes.h"
 
@@ -16,7 +17,10 @@ public:
 	static DatabaseManager & instance();
 	QSqlDatabase db;
 
-	QSqlTableModel suitesTable;
+	static void getSuitesModel(QSharedPointer<QSqlTableModel> & ptr);
+	static void getCasesModel(QSharedPointer<QSqlRelationalTableModel> & ptr);
+	static void getIncidentsModel(QSharedPointer<QSqlRelationalTableModel> & ptr);
+
 	QSqlQuery insertSuites;
 	QSqlQuery insertCases;
 	QSqlQuery inserIncidents;
@@ -35,6 +39,9 @@ private:
 	ECode init();
 	ECode createTables(QSqlDatabase & db);
 	State m_state;
+	QSharedPointer<QSqlTableModel> m_suitesTable;
+	QSharedPointer<QSqlRelationalTableModel> m_casesTable;
+	QSharedPointer<QSqlRelationalTableModel> m_incidentsTable;
 	explicit DatabaseManager(QObject *parent = 0);
 
 };
