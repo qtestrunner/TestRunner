@@ -1,14 +1,15 @@
-#include <QCoreApplication>
+#include <QApplication>
 #include <QtCore>
 
 #include "testscaner.h"
 #include "interfaces/ifile.h"
 #include "utils/log.h"
 #include "data/testresults.h"
+#include "gui/ctesttreeview.h"
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
     if (a.arguments().count() < 3)
     {
         LOG("first argument path, second - mask\n");
@@ -55,13 +56,12 @@ int main(int argc, char *argv[])
 					qDebug() << "failed in" << incd.m_file_path << ":" << incd.m_line << "desc:"<< incd.m_description;
 				}
 			}
-
-
 		}
-
-
 	}
+    CTestTreeView* view;
 
+    view = new CTestTreeView();
 
-	return 0;
+    view->getTestFilesList(testfiles);
+    return a.exec();
 }

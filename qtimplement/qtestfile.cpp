@@ -7,7 +7,7 @@
 
 void QTestFile::parseResults(const QByteArray &output, TestSuiteResult & suite_result)
 {
-	QXmlStreamReader xmlr(output);
+    QXmlStreamReader xmlr(output);
 	;
 
 	while(!xmlr.atEnd() && !xmlr.hasError())
@@ -81,10 +81,10 @@ void QTestFile::run(QList<TestSuiteResult> & results)
 			{
 				if(caseitem->hasDataTags())
 				{
-					const QList<QByteArray> & tags = caseitem->runnableDataTags();
+                    const QList<QString> & tags = caseitem->runnableDataTags();
 					if (tags != caseitem->getAllDataTags())
 					{
-						foreach(const QByteArray & tag,tags)
+                        foreach(const QString & tag,tags)
 						{
 							QString arg(caseitem->getName());
 							arg.append(':');
@@ -106,10 +106,10 @@ void QTestFile::run(QList<TestSuiteResult> & results)
 	if (args.isEmpty())
 		return;
 
-	QByteArray output;
+    QString output;
 	args.insert(0, "-xml");
-	if(Utils::runProcess(m_absname, args, output))
-		parseResults(output, suite_result);
+    if(Utils::runProcess(m_absname, args, output))
+        parseResults(output.toAscii(), suite_result);
 
 	results.push_back(suite_result);
 }

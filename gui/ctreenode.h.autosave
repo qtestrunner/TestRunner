@@ -1,0 +1,36 @@
+#ifndef CTREENODE_H
+#define CTREENODE_H
+
+#include <QList>
+
+class TreeNode
+{
+
+public:
+    typedef enum { ROOT, TESTSUITE, TESTCASE, DATATAG } NodeType;
+
+    /// Default Constructor - creates new Tree Node with a single root element
+    TreeNode();
+
+    /*!
+     * \brief addChildNode - adds child Node to current Node
+     * \param ptr - pointer to linkled element
+     */
+    void addChildNode(void* ptr);
+
+    void
+
+private:
+
+    /// Pointer to the linked element
+    void* m_item;
+
+    /// Pointer to the parent element
+    TreeNode* m_parent;
+
+    /// List of child elements
+    QList<TreeNode*> m_childlist;
+
+};
+
+#endif // CTREENODE_H

@@ -6,7 +6,8 @@
 
 QT       += core
 
-QT       -= gui
+QT       += gui
+
 
 TARGET = qttestloader
 CONFIG   += console
@@ -26,7 +27,10 @@ SOURCES += main.cpp \
     gtest_implement/gtest_testcase.cpp \
     qtimplement/qtestfile.cpp \
     gtest_implement/gtest_loader.cpp \
-    gtest_implement/gtest_file.cpp
+    gtest_implement/gtest_file.cpp \
+    gui/ctesttreeview.cpp \
+    gui/ctestsuiteviewmodel.cpp \
+    gui/treenode.cpp
 
 HEADERS += \
     qtimplement/qtestcase.h \
@@ -45,4 +49,7 @@ HEADERS += \
     interfaces/ifile.h \
     qtimplement/qtestfile.h \
     gtest_implement/gtest_file.h \
-    gtest_implement/gtest_loader.h
+    gtest_implement/gtest_loader.h \
+    gui/ctesttreeview.h \
+    gui/ctestsuiteviewmodel.h \
+    gui/treenode.h

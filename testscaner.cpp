@@ -14,10 +14,10 @@ TestScaner::TestType TestScaner::getTestType(const QString &file)
     QStringList args;
 	args << "/?";
 
-	QList<QByteArray> results;
+    QList<QString> results;
 	if(Utils::runProcess(file, args, results))
 	{
-		foreach(QByteArray arr, results)
+        foreach(QString arr, results)
 		{
 			if (arr.contains("QVERIFY/QCOMPARE/QTEST"))
 				return TestTypeQtTestLib;

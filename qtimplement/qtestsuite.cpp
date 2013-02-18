@@ -14,7 +14,7 @@ QTestSuite::~QTestSuite()
 
 //------------------------------------------------------------------------------
 // Returns name os test suite
-const QByteArray & QTestSuite::getName()
+const QString & QTestSuite::getName()
 {
 	return m_name;
 }
@@ -31,7 +31,7 @@ bool QTestSuite::isRunnable()
 
 //------------------------------------------------------------------------------
 // Sets name of suite
-void QTestSuite::setName(const QByteArray &name)
+void QTestSuite::setName(const QString &name)
 {
 	m_name = name;
 }
