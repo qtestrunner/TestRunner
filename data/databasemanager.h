@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlRelationalTableModel>
+#include <QSqlTableModel>
 #include <QSharedPointer>
 
 #include "utils/errorcodes.h"
@@ -18,13 +18,9 @@ public:
 	QSqlDatabase db;
 
 	static void getSuitesModel(QSharedPointer<QSqlTableModel> & ptr);
-	static void getCasesModel(QSharedPointer<QSqlRelationalTableModel> & ptr);
-	static void getIncidentsModel(QSharedPointer<QSqlRelationalTableModel> & ptr);
-
-	QSqlQuery insertSuites;
-	QSqlQuery insertCases;
-	QSqlQuery inserIncidents;
-
+	static void getCasesModel(QSharedPointer<QSqlTableModel> & ptr);
+	static void getIncidentsModel(QSharedPointer<QSqlTableModel> & ptr);
+	int getMaxId(const QString & table_name);
 signals:
 	
 public slots:
@@ -40,8 +36,8 @@ private:
 	ECode createTables(QSqlDatabase & db);
 	State m_state;
 	QSharedPointer<QSqlTableModel> m_suitesTable;
-	QSharedPointer<QSqlRelationalTableModel> m_casesTable;
-	QSharedPointer<QSqlRelationalTableModel> m_incidentsTable;
+	QSharedPointer<QSqlTableModel> m_casesTable;
+	QSharedPointer<QSqlTableModel> m_incidentsTable;
 	explicit DatabaseManager(QObject *parent = 0);
 
 };

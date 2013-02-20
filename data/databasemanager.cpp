@@ -52,46 +52,44 @@ ECode DatabaseManager::init()
 		}
 	}
 
-	insertSuites = QSqlQuery(db);
-	if (!insertSuites.prepare("insert into results_suites"
-						 "(suitename, testrunuid, dtstart, dtstop) values"
-						 "(:suitename, :testrunuid, :dtstart, :dtstop)"))
-	{
-		DEBUG(insertSuites.lastError().text());
-		return EDbOpenFatalError;
-	}
+//	insertSuites = QSqlQuery(db);
+//	if (!insertSuites.prepare("insert into results_suites"
+//						 "(suitename, testrunuid, dtstart, dtstop) values"
+//						 "(:suitename, :testrunuid, :dtstart, :dtstop)"))
+//	{
+//		DEBUG(insertSuites.lastError().text());
+//		return EDbOpenFatalError;
+//	}
 
-	insertCases = QSqlQuery(db);
-	if (!insertCases.prepare("insert into results_cases"
-						"( casename, testrunuid, result, dtstop, status, suiteid, dtstart) values"
-						"( :casename, :testrunuid, :result, :dtstop, :status, :suiteid, :dtstart)"))
-	{
-		DEBUG(insertCases.lastError().text());
-		return EDbOpenFatalError;
-	}
+//	insertCases = QSqlQuery(db);
+//	if (!insertCases.prepare("insert into results_cases"
+//						"( casename, testrunuid, result, dtstop, status, suiteid, dtstart) values"
+//						"( :casename, :testrunuid, :result, :dtstop, :status, :suiteid, :dtstart)"))
+//	{
+//		DEBUG(insertCases.lastError().text());
+//		return EDbOpenFatalError;
+//	}
 
-	inserIncidents = QSqlQuery(db);
-	if (!inserIncidents.prepare("insert into results_incidents"
-						   "( caseid, testrunuid, tagname, description, dtstart, filepath, line, dtstop, status) values "
-						   "( :caseid, :testrunuid, :tagname, :description, :dtstart, :filepath, :line, :dtstop, :status)"))
-	{
-		DEBUG(insertCases.lastError().text());
-		return EDbOpenFatalError;
-	}
+//	inserIncidents = QSqlQuery(db);
+//	if (!inserIncidents.prepare("insert into results_incidents"
+//						   "( caseid, testrunuid, tagname, description, dtstart, filepath, line, dtstop, status) values "
+//						   "( :caseid, :testrunuid, :tagname, :description, :dtstart, :filepath, :line, :dtstop, :status)"))
+//	{
+//		DEBUG(insertCases.lastError().text());
+//		return EDbOpenFatalError;
+//	}
 
 	m_suitesTable = QSharedPointer<QSqlTableModel>(new QSqlTableModel(0, db));
 	m_suitesTable->setTable("results_suites");
 	m_suitesTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
-	m_casesTable = QSharedPointer<QSqlRelationalTableModel>(new QSqlRelationalTableModel(0, db));
+	m_casesTable = QSharedPointer<QSqlTableModel>(new QSqlTableModel(0, db));
 	m_casesTable->setTable("results_cases");
 	m_casesTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
-	m_casesTable->setRelation(m_casesTable->fieldIndex("suiteid"), QSqlRelation("results_suites", "id", "suitename"));
 
-	m_incidentsTable = QSharedPointer<QSqlRelationalTableModel>(new QSqlRelationalTableModel(0, db));
+	m_incidentsTable = QSharedPointer<QSqlTableModel>(new QSqlTableModel(0, db));
 	m_incidentsTable->setTable("results_incidents");
 	m_incidentsTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
-	m_incidentsTable->setRelation(m_incidentsTable->fieldIndex("caseid"), QSqlRelation("results_cases", "id", "casename"));
 
 	m_state = StateOk;
 	return EOk;
@@ -126,13 +124,32 @@ ECode DatabaseManager::createTables(QSqlDatabase & db)
 	return EOk;
 }
 
-void DatabaseManager::getIncidentsModel(QSharedPointer<QSqlRelationalTableModel> &ptr)
+void DatabaseManager::getIncidentsModel(QSharedPointer<QSqlTableModel> &ptr)
 {
 	ptr = DatabaseManager::instance().m_incidentsTable;
 }
 
+int DatabaseManager::getMaxId(const QString & table_name)
+{
+	QSqlQuery maxid(db);
+	if (!maxid.exec(QString("SELECT id FROM %1 order by id desc limit 1").arg(table_name)))
+	{
+		DEBUG(maxid.lastError());
+		DEBUG(maxid.lastQuery());
+		return 1;
+	}
+	if(!maxid.next()) return 1;
+	QVariant id = maxid.value(0);
+	bool ok;
+	int rez = id.toInt(&ok);
+	if (ok)
+		return rez;
+	else
+		return 1;
+}
 
-void DatabaseManager::getCasesModel(QSharedPointer<QSqlRelationalTableModel> &ptr)
+
+void DatabaseManager::getCasesModel(QSharedPointer<QSqlTableModel> &ptr)
 {
 	ptr = DatabaseManager::instance().m_casesTable;
 }
