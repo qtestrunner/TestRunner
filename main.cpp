@@ -35,11 +35,20 @@ int main(int argc, char *argv[])
 	}
 
 	DEBUG("all done");
-	QList<TestSuiteResult> results;
+	QList<TestSuiteResult> results_for_save;
 	foreach(IFilePtr file, testfiles)
-		file->run(results);
+		file->run(results_for_save);
 
-	foreach(const TestSuiteResult & result, results)
+	TRACE("Try to save");
+	TestKeeper::saveSuites(results_for_save);
+
+
+	QList<TestSuiteResult> results_loaded;
+	SearchParams sp;
+	sp.runuid = results_for_save.first().m_uid;
+	TestKeeper::loadSuites(results_loaded, sp);
+
+	foreach(const TestSuiteResult & result, results_loaded)
 	{
 		qDebug() << "suite name = " << result.m_suitename;
 
@@ -57,15 +66,8 @@ int main(int argc, char *argv[])
 					qDebug() << "failed in" << incd.m_file_path << ":" << incd.m_line << "desc:"<< incd.m_description;
 				}
 			}
-
-
 		}
-
-
 	}
-
-	TRACE("Try to save");
-	TestKeeper::saveSuites(results);
 
 	return 0;
 }

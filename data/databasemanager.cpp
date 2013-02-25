@@ -52,33 +52,6 @@ ECode DatabaseManager::init()
 		}
 	}
 
-//	insertSuites = QSqlQuery(db);
-//	if (!insertSuites.prepare("insert into results_suites"
-//						 "(suitename, testrunuid, dtstart, dtstop) values"
-//						 "(:suitename, :testrunuid, :dtstart, :dtstop)"))
-//	{
-//		DEBUG(insertSuites.lastError().text());
-//		return EDbOpenFatalError;
-//	}
-
-//	insertCases = QSqlQuery(db);
-//	if (!insertCases.prepare("insert into results_cases"
-//						"( casename, testrunuid, result, dtstop, status, suiteid, dtstart) values"
-//						"( :casename, :testrunuid, :result, :dtstop, :status, :suiteid, :dtstart)"))
-//	{
-//		DEBUG(insertCases.lastError().text());
-//		return EDbOpenFatalError;
-//	}
-
-//	inserIncidents = QSqlQuery(db);
-//	if (!inserIncidents.prepare("insert into results_incidents"
-//						   "( caseid, testrunuid, tagname, description, dtstart, filepath, line, dtstop, status) values "
-//						   "( :caseid, :testrunuid, :tagname, :description, :dtstart, :filepath, :line, :dtstop, :status)"))
-//	{
-//		DEBUG(insertCases.lastError().text());
-//		return EDbOpenFatalError;
-//	}
-
 	m_suitesTable = QSharedPointer<QSqlTableModel>(new QSqlTableModel(0, db));
 	m_suitesTable->setTable("results_suites");
 	m_suitesTable->setEditStrategy(QSqlTableModel::OnManualSubmit);

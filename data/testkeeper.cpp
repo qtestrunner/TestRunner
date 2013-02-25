@@ -28,7 +28,7 @@ ECode TestKeeper::saveSuites(const QList<TestSuiteResult> &suit_results)
 	foreach(const TestSuiteResult & suite, suit_results)
 	{
 		QSqlRecord rd(suitesTable->record());
-		QByteArray runuid = suite.m_uid.toByteArray();
+		QString runuid = suite.m_uid.toString();
 		rd.setValue("id", suiteid);
 		rd.setValue("suitename", suite.m_suitename);
 		rd.setValue("testrunuid", runuid);
@@ -102,6 +102,100 @@ ECode TestKeeper::saveSuites(const QList<TestSuiteResult> &suit_results)
 
 ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchParams & params)
 {
+	DatabaseManager & manager = DatabaseManager::instance();
+	QSharedPointer<QSqlTableModel> suitesTable;
+	manager.getSuitesModel(suitesTable);
+
+	QSharedPointer<QSqlTableModel> casesTable;
+	manager.getCasesModel(casesTable);
+
+	QSharedPointer<QSqlTableModel> incidentsTable;
+	manager.getIncidentsModel(incidentsTable);
+
+	QString filter;
+	if (!params.runuid.isNull())
+	{
+		QString uuidf("testrunuid = '%1' and");
+		filter.append(uuidf.arg(params.runuid.toString()));
+	}
+
+	if (!params.m_startdate.isNull())
+	{
+		QString datef("(dtstart >= %1) and (dtstop <= %2) and");
+		filter.append(datef.arg(params.m_startdate.toMSecsSinceEpoch()));
+		if (!params.m_stopdate.isNull())
+			filter.append(datef.arg(params.m_stopdate.toMSecsSinceEpoch()));
+		else
+			filter.append(datef.arg(QDateTime::currentMSecsSinceEpoch()));
+	}
+
+	if (!filter.isEmpty())
+	{
+		filter = filter.left(filter.size() - 4);//cuting and
+	}
+
+	suitesTable->setFilter(filter);
+
+	if (!suitesTable->select())
+	{
+		DEBUG(suitesTable->lastError().text());
+		return EDbSQlExecError;
+	}
+
+	for(int i = 0; i < suitesTable->rowCount(); i++)
+	{
+		TestSuiteResult suiteResult;
+		const QSqlRecord & row = suitesTable->record(i);
+
+		suiteResult.m_suitename = row.value(suitesTable->fieldIndex("suitename")).toString();
+		suiteResult.m_uid = QUuid(row.value(suitesTable->fieldIndex("testrunuid")).toString());
+		suiteResult.m_dt_start = QDateTime::fromMSecsSinceEpoch(row.value(suitesTable->fieldIndex("dtstart")).toLongLong());
+		suiteResult.m_dt_stop = QDateTime::fromMSecsSinceEpoch(row.value(suitesTable->fieldIndex("dtstop")).toLongLong());
+		suit_results.push_back(suiteResult);
+
+		casesTable->setFilter(QString("suiteid = %1").arg(row.value(0).toInt()));
+		if (!casesTable->select())
+		{
+			DEBUG(casesTable->lastError().text());
+			return EDbSQlExecError;
+		}
+		for(int i = 0; i < casesTable->rowCount(); i++)
+		{
+			TestCaseResult caseResult;
+			const QSqlRecord & row = casesTable->record(i);
+			caseResult.m_casename = row.value(casesTable->fieldIndex("casename")).toString();
+			caseResult.m_result = row.value(casesTable->fieldIndex("result")).toInt();
+			caseResult.status = row.value(casesTable->fieldIndex("result")).toInt();
+			caseResult.m_dt_start = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstart")).toLongLong());
+			caseResult.m_dt_stop = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstop")).toLongLong());
+
+			incidentsTable->setFilter(QString("caseid = %1").arg(row.value(0).toString()));
+			if (!incidentsTable->select())
+			{
+				DEBUG(incidentsTable->lastError().text());
+				return EDbSQlExecError;
+			}
+			for(int i = 0; i < incidentsTable->rowCount(); i++)
+			{
+				Incident inc;
+				const QSqlRecord & row = incidentsTable->record(i);
+				inc.m_tagname = row.value(incidentsTable->fieldIndex("tagname")).toString();
+				inc.m_description = row.value(incidentsTable->fieldIndex("description")).toString();
+				inc.m_file_path = row.value(incidentsTable->fieldIndex("filepath")).toString();
+				inc.m_line = row.value(incidentsTable->fieldIndex("line")).toInt();
+				inc.m_status = row.value(incidentsTable->fieldIndex("status")).toInt();
+				inc.m_dt_start = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstart")).toLongLong());
+				inc.m_dt_stop = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstop")).toLongLong());
+
+				row.value()
+
+			}
+			suiteResult.m_caseresults.push_back(caseResult);
+		}
+
+
+
+	}
 
 	return EOk;
 }
