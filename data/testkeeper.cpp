@@ -114,10 +114,7 @@ ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchP
 
 	QString filter;
 	if (!params.runuid.isNull())
-	{
-		QString uuidf("testrunuid = '%1' and");
-		filter.append(uuidf.arg(params.runuid.toString()));
-	}
+		filter.append(QString("testrunuid = '%1' and").arg(params.runuid.toString()));
 
 	if (!params.m_startdate.isNull())
 	{
@@ -151,7 +148,7 @@ ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchP
 		suiteResult.m_uid = QUuid(row.value(suitesTable->fieldIndex("testrunuid")).toString());
 		suiteResult.m_dt_start = QDateTime::fromMSecsSinceEpoch(row.value(suitesTable->fieldIndex("dtstart")).toLongLong());
 		suiteResult.m_dt_stop = QDateTime::fromMSecsSinceEpoch(row.value(suitesTable->fieldIndex("dtstop")).toLongLong());
-		suit_results.push_back(suiteResult);
+
 
 		casesTable->setFilter(QString("suiteid = %1").arg(row.value(0).toInt()));
 		if (!casesTable->select())
@@ -164,8 +161,8 @@ ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchP
 			TestCaseResult caseResult;
 			const QSqlRecord & row = casesTable->record(i);
 			caseResult.m_casename = row.value(casesTable->fieldIndex("casename")).toString();
-			caseResult.m_result = row.value(casesTable->fieldIndex("result")).toInt();
-			caseResult.status = row.value(casesTable->fieldIndex("result")).toInt();
+			caseResult.m_result = TestCaseResult::Result(row.value(casesTable->fieldIndex("result")).toInt());
+			caseResult.m_status = TestCaseResult::Status(row.value(casesTable->fieldIndex("result")).toInt());
 			caseResult.m_dt_start = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstart")).toLongLong());
 			caseResult.m_dt_stop = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstop")).toLongLong());
 
@@ -183,26 +180,40 @@ ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchP
 				inc.m_description = row.value(incidentsTable->fieldIndex("description")).toString();
 				inc.m_file_path = row.value(incidentsTable->fieldIndex("filepath")).toString();
 				inc.m_line = row.value(incidentsTable->fieldIndex("line")).toInt();
-				inc.m_status = row.value(incidentsTable->fieldIndex("status")).toInt();
+				inc.m_status = Incident::Status(row.value(incidentsTable->fieldIndex("status")).toInt());
 				inc.m_dt_start = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstart")).toLongLong());
 				inc.m_dt_stop = QDateTime::fromMSecsSinceEpoch(row.value(casesTable->fieldIndex("dtstop")).toLongLong());
-
-				row.value()
-
+				caseResult.m_incedents.push_back(inc);
 			}
 			suiteResult.m_caseresults.push_back(caseResult);
 		}
-
-
-
+		suit_results.push_back(suiteResult);
 	}
 
 	return EOk;
 }
 
-ECode TestKeeper::updateSuites(QList<TestSuiteResult> &new_suit_results, const SearchParams &params)
+ECode TestKeeper::updateSuites(const QList<TestSuiteResult> &new_suit_results)
 {
+	//FIXME: Rewrite to simple sql statments
 	DatabaseManager & manager = DatabaseManager::instance();
+	QSharedPointer<QSqlTableModel> suitesTable;
+	manager.getSuitesModel(suitesTable);
+
+	QSharedPointer<QSqlTableModel> casesTable;
+	manager.getCasesModel(casesTable);
+
+	QSharedPointer<QSqlTableModel> incidentsTable;
+	manager.getIncidentsModel(incidentsTable);
+
+	foreach (TestSuiteResult suite, new_suit_results)
+	{
+		suitesTable->setFilter(QString("testrunuid = '%1'").arg(params.runuid.toString()));
+		suitesTable->select();
+		QSqlRecord row = suitesTable->record(0);
+		QString("testrunuid = '%1' and").arg(params.runuid.toString())
+	}
+
 
 	return EOk;
 }

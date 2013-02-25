@@ -39,6 +39,10 @@ int main(int argc, char *argv[])
 	foreach(IFilePtr file, testfiles)
 		file->run(results_for_save);
 
+	if (results_for_save.isEmpty())
+	{
+		DEBUG("result are empty!");
+	}
 	TRACE("Try to save");
 	TestKeeper::saveSuites(results_for_save);
 

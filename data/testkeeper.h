@@ -21,7 +21,7 @@ public:
 
 	static ECode loadSuites(QList<TestSuiteResult> & suit_results, const SearchParams & params);
 
-	static ECode updateSuites(QList<TestSuiteResult> & new_suit_results, const SearchParams & params);
+	static ECode updateSuites(const QList<TestSuiteResult> & new_suit_results);
 
 };
 

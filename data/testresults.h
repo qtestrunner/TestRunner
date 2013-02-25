@@ -14,9 +14,9 @@ struct Incident
 {
 	enum Status
 	{
-		StatusAccepted,
-		StatusRejected,
-		StatusNew
+		StatusAccepted = 0,
+		StatusRejected = 1,
+		StatusNew = 2
 	};
 
 	QString m_file_path;
