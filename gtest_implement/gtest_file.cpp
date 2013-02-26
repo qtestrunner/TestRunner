@@ -5,7 +5,8 @@ void GTest_File::setAbsFileName(const QString & absname){
 }
 
 void GTest_File::run(QList<TestSuiteResult> & results){
-    Q_ASSERT_X(false, "Not Implemented Yet","ViacheslavL");
+
+    //Q_ASSERT_X(false, "Not Implemented Yet","ViacheslavL");
 }
 
 QList<ITestSuitePtr> GTest_File::getTestSuites(){

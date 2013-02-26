@@ -8,7 +8,7 @@
  */
 class GTest_TestSuite : public ITestSuite
 {
-    QByteArray m_name;
+    QString m_name;
 	QList<ITestCasePtr> m_cases;
 	bool m_runnable;
 public:
@@ -29,9 +29,9 @@ public:
      * \brief setName - method sets name of TestSuite
      * \param name -
      */
-    void setName(const QByteArray &name);
+    void setName(const QString &name);
 
-    const QByteArray & getName();
+    const QString & getName();
 
 	virtual void setRunnable(bool flag);
 

@@ -17,7 +17,7 @@ public:
 	/**Returns test case name
 	 * @return Test case name
 	 */
-	virtual const QByteArray & getName() = 0;
+    virtual const QString & getName() = 0;
 
 	/** Indicate if test case have data tags
 	 * @return
@@ -28,14 +28,14 @@ public:
 
 	virtual bool isRunnable() = 0;
 
-	virtual void setRunnableDataTags(const QList<QByteArray> & tags) = 0;
+    virtual void setRunnableDataTags(const QList<QString> & tags) = 0;
 
-	virtual const QList<QByteArray> runnableDataTags() = 0;
+    virtual const QList<QString> runnableDataTags() = 0;
 
 	/** Return vector of test case data tags
 	 * @return vector of data tags
 	 */
-	virtual const QList<QByteArray> getAllDataTags() = 0;
+    virtual const QList<QString> getAllDataTags() = 0;
 };
 
 typedef QSharedPointer<ITestCase> ITestCasePtr;

@@ -28,7 +28,7 @@ protected:
 	 * @param[out] casesname
 	 * @return Result of operation
 	 */
-	Result loadCases(const QString & file_name, QList<QByteArray> &casesname);
+    Result loadCases(const QString & file_name, QList<QString> &casesname);
 
 	/** Run qtest programm with arg -datatags, and fill cases with datatags
 	 * @param file_name filename of executable
@@ -40,13 +40,13 @@ protected:
 	/** Filter results from #runProcess, make them printable and delete "()"
 	 * @param data Run results from #runProcess
 	 */
-	void filterResults(QList<QByteArray> & data);
+    void filterResults(QList<QString> & data);
 
 	/** Scan results and data tags to testcases
 	 * @param cases Conteiner of #QTestCase (s)
 	 * @param results results from runing qtest with -datatags(and filtered with #filterResults)
 	 */
-	void addDataTags(QList<QTestCasePtr> & cases, const QList<QByteArray> & results);
+    void addDataTags(QList<QTestCasePtr> & cases, const QList<QString> & results);
 };
 
 #endif // QTRUNNER_H

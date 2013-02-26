@@ -12,7 +12,7 @@ QList<ITestCasePtr>& GTest_TestSuite::getCases()  {
     return m_cases;
 }
 
-const QByteArray& GTest_TestSuite::getName (){
+const QString& GTest_TestSuite::getName (){
 	return m_name;
 }
 
@@ -22,7 +22,7 @@ void GTest_TestSuite::setRunnable(bool flag)
 }
 
 
-void GTest_TestSuite::setName (const QByteArray& name) {
+void GTest_TestSuite::setName (const QString& name) {
     m_name = name;
 }
 

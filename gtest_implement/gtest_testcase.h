@@ -7,21 +7,21 @@
 
 class GTest_TestCase : public ITestCase
 {
-    QByteArray m_name ;
-	QList<QByteArray> m_null;
+    QString m_name ;
+    QList<QString> m_null;
 	bool m_runnable;
 public:
     /*!
      *  \brief GTest_TestCase - Constructor
      *  \param name - name of created testcase
      */
-    explicit GTest_TestCase (const QByteArray & name);
+    explicit GTest_TestCase (const QString & name);
 
     void print(){
         DEBUG((QString("name=") + m_name));
     }
 
-    const QByteArray & getName(){
+    const QString & getName(){
         return m_name;
     }
 
@@ -33,11 +33,11 @@ public:
 
 	virtual bool isRunnable();
 
-	virtual void setRunnableDataTags(const QList<QByteArray> & tags);
+    virtual void setRunnableDataTags(const QList<QString> & tags);
 
-	const QList<QByteArray> runnableDataTags();
+    const QList<QString> runnableDataTags();
 
-	const QList<QByteArray> getAllDataTags(){
+    const QList<QString> getAllDataTags(){
         Q_ASSERT_X(false, "NOT ALLOWED","ViacheslavL");
         return m_null;
     }

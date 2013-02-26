@@ -3,7 +3,7 @@
 
 //------------------------------------------------------------------------------
 //Constructor with name parametr
-QTestCase::QTestCase(const QByteArray & name)
+QTestCase::QTestCase(const QString & name)
 	: m_name(name)
 	, m_runnable(true)
 {
@@ -11,7 +11,7 @@ QTestCase::QTestCase(const QByteArray & name)
 
 //------------------------------------------------------------------------------
 //Sets data tags vector for this test case
-void QTestCase::setDataTags(const QList<QByteArray> & datatags)
+void QTestCase::setDataTags(const QList<QString> & datatags)
 {
 	m_datatags = datatags;
 }
@@ -21,7 +21,7 @@ void QTestCase::setDataTags(const QList<QByteArray> & datatags)
 void QTestCase::print()
 {
 	DEBUG((QString("name=") + m_name));
-	foreach(QByteArray data, m_datatags)
+    foreach(QString data, m_datatags)
 	{
 		DEBUG((QString("tag=") + data));
 	}
@@ -29,15 +29,15 @@ void QTestCase::print()
 
 //------------------------------------------------------------------------------
 //Returns test case name
-const QByteArray &QTestCase::getName()
+const QString &QTestCase::getName()
 {
 	return m_name;
 }
 
-void QTestCase::setRunnableDataTags(const QList<QByteArray> & tags)
+void QTestCase::setRunnableDataTags(const QList<QString> & tags)
 {
 	m_runnabletags.clear();
-	foreach(const QByteArray & tag, tags)
+    foreach(const QString & tag, tags)
 	{
 		if (m_datatags.contains(tag))
 			m_runnabletags.push_back(tag);
@@ -45,7 +45,7 @@ void QTestCase::setRunnableDataTags(const QList<QByteArray> & tags)
 	}
 }
 
-const QList<QByteArray> QTestCase::runnableDataTags()
+const QList<QString> QTestCase::runnableDataTags()
 {
 	if (m_runnabletags.isEmpty())
 		return m_datatags;
@@ -55,7 +55,7 @@ const QList<QByteArray> QTestCase::runnableDataTags()
 
 //------------------------------------------------------------------------------
 //Return vector of test case data tags
-const QList<QByteArray> QTestCase::getAllDataTags()
+const QList<QString> QTestCase::getAllDataTags()
 {
 	return m_datatags;
 }

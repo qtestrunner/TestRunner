@@ -1,6 +1,6 @@
 #include "gtest_testcase.h"
 
-GTest_TestCase::GTest_TestCase (const QByteArray & name)
+GTest_TestCase::GTest_TestCase (const QString & name)
 	: m_runnable(true)
 {
 	m_name = name;
@@ -16,12 +16,12 @@ bool GTest_TestCase::isRunnable()
 	return m_runnable;
 }
 
-void GTest_TestCase::setRunnableDataTags(const QList<QByteArray> &tags)
+void GTest_TestCase::setRunnableDataTags(const QList<QString> &tags)
 {
 
 }
 
-const QList<QByteArray> GTest_TestCase::runnableDataTags()
+const QList<QString> GTest_TestCase::runnableDataTags()
 {
-	return QList<QByteArray>();
+    return QList<QString>();
 }

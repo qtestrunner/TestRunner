@@ -12,7 +12,7 @@ GTest_Loader::~GTest_Loader(){
 ITestLoader::Result GTest_Loader::loadFile(const QString &file_name, IFilePtr &file, const QStringList &environment){
 
     ITestCasePtr testcase;
-    QList<QByteArray> listResult;
+    QList<QString> listResult;
     QList<ITestSuitePtr> gtest_suites;
     QStringList args;
     ITestSuitePtr google_suite;
@@ -23,7 +23,7 @@ ITestLoader::Result GTest_Loader::loadFile(const QString &file_name, IFilePtr &f
 
     Utils::runProcess(file_name, args, listResult);
     DEBUG(QString("Gtest detected"));
-    foreach(QByteArray line, listResult){
+    foreach(QString line, listResult){
         // if there is no spaces - than it is testsuitename
         if (line[0] != ' '){
             google_suite = ITestSuitePtr(new GTest_TestSuite);
