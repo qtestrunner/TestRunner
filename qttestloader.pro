@@ -28,14 +28,9 @@ SOURCES += main.cpp \
     qtimplement/qtestfile.cpp \
     gtest_implement/gtest_loader.cpp \
     gtest_implement/gtest_file.cpp \
-<<<<<<< HEAD
-    data/testkeeper.cpp \
-    data/databasemanager.cpp
-=======
     gui/ctesttreeview.cpp \
     gui/ctestsuiteviewmodel.cpp \
     gui/treenode.cpp
->>>>>>> gui
 
 HEADERS += \
     qtimplement/qtestcase.h \
@@ -55,12 +50,6 @@ HEADERS += \
     qtimplement/qtestfile.h \
     gtest_implement/gtest_file.h \
     gtest_implement/gtest_loader.h \
-<<<<<<< HEAD
-    data/testkeeper.h \
-    utils/errorcodes.h \
-    data/databasemanager.h
-=======
     gui/ctesttreeview.h \
     gui/ctestsuiteviewmodel.h \
     gui/treenode.h
->>>>>>> gui

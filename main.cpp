@@ -5,11 +5,8 @@
 #include "interfaces/ifile.h"
 #include "utils/log.h"
 #include "data/testresults.h"
-<<<<<<< HEAD
-#include "data/testkeeper.h"
-=======
 #include "gui/ctesttreeview.h"
->>>>>>> gui
+
 
 int main(int argc, char *argv[])
 {
@@ -62,14 +59,10 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-<<<<<<< HEAD
-	TestKeeper::saveSuites(results);
-=======
+
+
     CTestTreeView* view;
-
     view = new CTestTreeView();
->>>>>>> gui
-
     view->getTestFilesList(testfiles);
     return a.exec();
 }
