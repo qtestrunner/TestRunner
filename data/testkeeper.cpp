@@ -196,24 +196,39 @@ ECode TestKeeper::loadSuites(QList<TestSuiteResult> &suit_results, const SearchP
 ECode TestKeeper::updateSuites(const QList<TestSuiteResult> &new_suit_results)
 {
 	//FIXME: Rewrite to simple sql statments
-	DatabaseManager & manager = DatabaseManager::instance();
-	QSharedPointer<QSqlTableModel> suitesTable;
-	manager.getSuitesModel(suitesTable);
+	//FIXME: implement only after gui
+//	DatabaseManager & manager = DatabaseManager::instance();
+//	QSharedPointer<QSqlTableModel> suitesTable;
+//	manager.getSuitesModel(suitesTable);
 
-	QSharedPointer<QSqlTableModel> casesTable;
-	manager.getCasesModel(casesTable);
+//	QSharedPointer<QSqlTableModel> casesTable;
+//	manager.getCasesModel(casesTable);
 
-	QSharedPointer<QSqlTableModel> incidentsTable;
-	manager.getIncidentsModel(incidentsTable);
+//	QSharedPointer<QSqlTableModel> incidentsTable;
+//	manager.getIncidentsModel(incidentsTable);
 
-	foreach (TestSuiteResult suite, new_suit_results)
-	{
-		suitesTable->setFilter(QString("testrunuid = '%1'").arg(params.runuid.toString()));
-		suitesTable->select();
-		QSqlRecord row = suitesTable->record(0);
-		QString("testrunuid = '%1' and").arg(params.runuid.toString())
-	}
+//	QSqlRecord sr = suitesTable->record();
+//	QSqlRecord cr = casesTable->record();
+//	QSqlRecord ir = incidentsTable->record();
 
+//	foreach (TestSuiteResult suite, new_suit_results)
+//	{
+//		suitesTable->setFilter(QString("testrunuid = '%1'").arg(params.runuid.toString()));
+//		if (!suitesTable->select())
+//		{
+//			DEBUG(suitesTable->lastError().text());
+//			return EDbSQlExecError;
+//		}
+
+//		sr.setValue("suitename", suite.m_suitename);
+//		rd.setValue("testrunuid", runuid);
+//		rd.setValue("dtstart", suite.m_dt_start.toMSecsSinceEpoch());
+//		rd.setValue("dtstop", suite.m_dt_stop.toMSecsSinceEpoch());
+//		suitesTable->setRecord(0, )
+//		setRecord(0,)
+//		->setRecord(0, )
+
+//	}
 
 	return EOk;
 }
