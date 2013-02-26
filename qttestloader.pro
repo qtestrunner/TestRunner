@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core sql
+QT       += core
+QT       += sql
 
 QT       += gui
 
@@ -30,7 +31,9 @@ SOURCES += main.cpp \
     gtest_implement/gtest_file.cpp \
     gui/ctesttreeview.cpp \
     gui/ctestsuiteviewmodel.cpp \
-    gui/treenode.cpp
+    gui/treenode.cpp \
+    data/testkeeper.cpp \
+    data/databasemanager.cpp
 
 HEADERS += \
     qtimplement/qtestcase.h \
@@ -52,4 +55,6 @@ HEADERS += \
     gtest_implement/gtest_loader.h \
     gui/ctesttreeview.h \
     gui/ctestsuiteviewmodel.h \
-    gui/treenode.h
+    gui/treenode.h \
+    data/testkeeper.h \
+    data/databasemanager.h

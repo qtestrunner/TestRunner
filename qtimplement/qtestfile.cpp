@@ -45,7 +45,7 @@ void QTestFile::parseResults(const QByteArray &output, TestSuiteResult & suite_r
 					else if(tagname == "DataTag")
 					{
 
-						suite_result.m_caseresults.last().m_incidents.last().m_tag = xmlr.readElementText();
+						suite_result.m_caseresults.last().m_incidents.last().m_tagname = xmlr.readElementText();
 					}
 					else if(tagname == "Description")
 					{
@@ -69,11 +69,11 @@ void QTestFile::run(QList<TestSuiteResult> & results)
 {
 	TestSuiteResult suite_result;
 	suite_result.m_suitename = m_suite->getName();
+	suite_result.m_uid = QUuid::createUuid();
 
 	QStringList args;
 	if (m_suite->isRunnable())
 	{
-
 		QList<ITestCasePtr> & cases = m_suite->getCases();
 		foreach(const ITestCasePtr & caseitem, cases)
 		{
