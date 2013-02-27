@@ -37,7 +37,7 @@ public:
      */
     TreeNode* parent () { return m_parent; }
 
-    QList<TreeNode*> getChildList() const  { return m_childlist; }
+	const QList<TreeNode*> & getChildList() const  { return m_childlist; }
 
 protected:
     /*!
@@ -45,11 +45,11 @@ protected:
      * \param ptr - pointer to linked element
      * \param type - type of new node
      */
-    TreeNode( void* ptr, NodeType type, TreeNode* parent);
+	TreeNode(void* ptr, NodeType type, TreeNode* parent);
 
 private:
     /// Pointer to the linked element
-    void* m_item;
+	void* m_item;
 
     /// Pointer to the parent element
     TreeNode* m_parent;

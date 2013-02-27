@@ -1,15 +1,15 @@
 #include "treenode.h"
 
 TreeNode::TreeNode()
+	: m_type(ROOT)
+	, m_parent(NULL)
+	, m_item(NULL)
 {
-    m_type = ROOT;
-    m_parent = NULL;
-    m_item = NULL;
 }
 
 TreeNode* TreeNode::addChildNode(void *ptr) {
     NodeType type;
-    TreeNode* newnode;
+	TreeNode* newnode = 0;
     if ( ptr ){
         switch(m_type){
         case ROOT:
@@ -30,8 +30,9 @@ TreeNode* TreeNode::addChildNode(void *ptr) {
     return newnode;
 }
 
-TreeNode::TreeNode(void* ptr, NodeType type, TreeNode* parent){
-    m_type = type;
-    m_parent = parent;
-    m_item = const_cast<void*>(ptr);
+TreeNode::TreeNode(void* ptr, NodeType type, TreeNode* parent)
+	: m_item(ptr)
+	, m_parent(parent)
+	, m_type(type)
+{
 }

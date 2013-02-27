@@ -3,9 +3,6 @@
 CTestSuiteViewModel::CTestSuiteViewModel(QList<IFilePtr>& filelist, QObject *parent):
     QAbstractItemModel(parent)
 {
-//    foreach(IFilePtr file, filelist){
-//        m_testsuites << file->getTestSuites();
-//    }
     m_rootNode = new TreeNode;
     foreach(IFilePtr file, filelist){
 
@@ -13,11 +10,11 @@ CTestSuiteViewModel::CTestSuiteViewModel(QList<IFilePtr>& filelist, QObject *par
             TreeNode* suiteNode = m_rootNode->addChildNode( (void*)testsuite.data());
 
             foreach(ITestCasePtr testcase, testsuite->getCases()){
-                TreeNode* caseNode = suiteNode->addChildNode( (void*)testcase.data());
+				TreeNode* caseNode = suiteNode->addChildNode( (void*)testcase.data());
 
                 if (testcase->hasDataTags()){
-                    foreach(QString datatag, testcase->getAllDataTags()){
-                        caseNode->addChildNode( (void*)datatag.toAscii().data());
+					foreach(const QString & datatag, testcase->getAllDataTags()){
+						caseNode->addChildNode( (void*)&datatag);
                     }
                 }
             }
@@ -37,18 +34,21 @@ Qt::ItemFlags CTestSuiteViewModel::flags(const QModelIndex &index) const
 
 QModelIndex CTestSuiteViewModel::index(int row, int column, const QModelIndex &parent) const
 {
-    if (!parent.isValid()){
+	if (parent == QModelIndex()){
 
         return createIndex(row, column, m_rootNode->getChildList().at(row));
     }
     else {
         const TreeNode* parentnode = reinterpret_cast<const TreeNode*>(parent.internalPointer());
+
+		Q_ASSERT(parentnode);
+
         return createIndex(row, column, parentnode->getChildList().at(row));
     }
 }
 
 int CTestSuiteViewModel::rowCount (const QModelIndex &parent) const {
-    if (!parent.isValid()) {
+	if (parent == QModelIndex()) {
         return m_rootNode->getChildList().size();
     }
     else {
@@ -62,7 +62,7 @@ int CTestSuiteViewModel::columnCount (const QModelIndex &parent) const {
 }
 
 QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const {
-    if (index.isValid() && role == Qt::DisplayRole){
+	if (index != QModelIndex() && role == Qt::DisplayRole){
         const TreeNode* node = reinterpret_cast<const TreeNode*>(index.internalPointer());
 
         switch((int)node->getType()){
@@ -70,15 +70,15 @@ QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const {
             return (QString)reinterpret_cast<ITestSuite*>(node->getItem())->getName();
         case TreeNode::TESTCASE:
             return (QString)reinterpret_cast<ITestCase*>(node->getItem())->getName();
+		case TreeNode::DATATAG:
+			return (QString)*reinterpret_cast<QString*>(node->getItem());
         }
-
     }
-
     return QVariant();
 }
 
 QModelIndex CTestSuiteViewModel::parent (const QModelIndex &child) const {
-    if (child.isValid()){
+	if (child != QModelIndex()){
         TreeNode* node = reinterpret_cast<TreeNode*>(child.internalPointer());
         switch(node->getType()){
         case TreeNode::TESTSUITE:
