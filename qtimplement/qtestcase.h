@@ -6,10 +6,10 @@
 
 class QTestCase: public ITestCase
 {
-    QString m_name; ///< Name of test case
-    QList<QString> m_datatags;///< Vector of data tags
+	QString m_name; ///< Name of test case
+	QList<QString> m_datatags;///< Vector of data tags
 	bool m_runnable;
-    QList<QString> m_runnabletags;
+	QList<QString> m_runnabletags;
 public:
 	QTestCase();
 	~QTestCase();
@@ -17,12 +17,12 @@ public:
 	/** Constructor with name parametr
 	 * @param m_name Name of test case
 	 */
-    explicit QTestCase(const QString & m_name);
+	explicit QTestCase(const QString & m_name);
 
 	/** Sets data tags vector for this test case
 	 * @param datatags Vector of data tags
 	 */
-    void setDataTags(const QList<QString> &datatags);
+	void setDataTags(const QList<QString> &datatags);
 
 	//ITestCase
 	/** Prints information about test case, only for debug */
@@ -35,15 +35,15 @@ public:
 
 	virtual bool isRunnable();
 
-    virtual void setRunnableDataTags(const QList<QString> & tags);
+	virtual void setRunnableDataTags(const QList<QString> & tags);
 
-    virtual const QList<QString> runnableDataTags();
+	virtual const QList<QString> runnableDataTags();
 
 	/** Returns test case name */
-    virtual const QString & getName();
+	virtual const QString & getName();
 
 	/** Return vector of test case data tags */
-    virtual const QList<QString> getAllDataTags();
+	virtual const QList<QString> getAllDataTags();
 };
 
 typedef QSharedPointer<QTestCase> QTestCasePtr;

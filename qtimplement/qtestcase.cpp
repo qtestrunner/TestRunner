@@ -21,7 +21,7 @@ void QTestCase::setDataTags(const QList<QString> & datatags)
 void QTestCase::print()
 {
 	DEBUG((QString("name=") + m_name));
-    foreach(QString data, m_datatags)
+	foreach(QString data, m_datatags)
 	{
 		DEBUG((QString("tag=") + data));
 	}
@@ -37,7 +37,7 @@ const QString &QTestCase::getName()
 void QTestCase::setRunnableDataTags(const QList<QString> & tags)
 {
 	m_runnabletags.clear();
-    foreach(const QString & tag, tags)
+	foreach(const QString & tag, tags)
 	{
 		if (m_datatags.contains(tag))
 			m_runnabletags.push_back(tag);

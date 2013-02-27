@@ -6,6 +6,7 @@
 #include "utils/log.h"
 #include "data/testresults.h"
 #include "gui/ctesttreeview.h"
+#include "data/testkeeper.h"
 
 
 int main(int argc, char *argv[])
@@ -64,5 +65,7 @@ int main(int argc, char *argv[])
     CTestTreeView* view;
     view = new CTestTreeView();
     view->getTestFilesList(testfiles);
+
+	TestKeeper::saveSuites(results);
     return a.exec();
 }

@@ -15,8 +15,8 @@ namespace Utils
 	 * @param timeout process time out
 	 * @return Result of operation, may failed with timeout
 	 */
-    bool runProcess(const QString &file_name, const QStringList & args, QList<QString> &results, int timeout = 10000,  const QStringList &environment = QStringList() );
+	bool runProcess(const QString &file_name, const QStringList & args, QList<QString> &results, int timeout = 10000,  const QStringList &environment = QStringList() );
 
-    bool runProcess(const QString &file_name, const QStringList & args, QString & results, int timeout = 10000,  const QStringList &environment = QStringList());
+	bool runProcess(const QString &file_name, const QStringList & args, QString & results, int timeout = 10000,  const QStringList &environment = QStringList());
 }
 #endif // UTILS_H

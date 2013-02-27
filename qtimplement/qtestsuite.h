@@ -10,7 +10,7 @@
 /** Class implemet #ITestSuite for QtTestLib */
 class QTestSuite: public ITestSuite
 {
-    QString m_name; ///< Test Suite name
+	QString m_name; ///< Test Suite name
 	QList<ITestCasePtr> m_cases; ///< Array of test cases
 	bool m_runnable;
 public:
@@ -25,11 +25,11 @@ public:
 	/** Sets name of suite
 	 * @param name new name of suite
 	 */
-    virtual	void setName(const QString &name);
+	virtual	void setName(const QString &name);
 
 	//ITestSuite:
 	/** Returns name os test suite */
-    virtual const QString & getName();
+	virtual const QString & getName();
 
 
 	virtual void setRunnable(bool flag);
