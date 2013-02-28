@@ -11,7 +11,7 @@ CTestTreeView::CTestTreeView(QWidget *parent) :
 void CTestTreeView::getTestFilesList(QList<IFilePtr> &filelist)
 {
     m_model = new CTestSuiteViewModel(filelist);
+	//m_treeview->setRootIndex(m_model->getRootIndex());
     m_treeview->setModel(m_model);
-    m_treeview->setRootIndex(m_model->getRootIndex());
     this->show();
 }

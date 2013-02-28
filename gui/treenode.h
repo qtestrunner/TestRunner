@@ -48,6 +48,7 @@ protected:
 	TreeNode(void* ptr, NodeType type, TreeNode* parent);
 
 private:
+
     /// Pointer to the linked element
 	void* m_item;
 

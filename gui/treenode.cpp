@@ -27,7 +27,8 @@ TreeNode* TreeNode::addChildNode(void *ptr) {
         newnode = new TreeNode(ptr, type, this);
         m_childlist << newnode;
     }
-    return newnode;
+
+	return newnode;
 }
 
 TreeNode::TreeNode(void* ptr, NodeType type, TreeNode* parent)
