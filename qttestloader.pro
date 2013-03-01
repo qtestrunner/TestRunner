@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     gui/ctestsuiteviewmodel.cpp \
     gui/treenode.cpp \
     data/testkeeper.cpp \
-    data/databasemanager.cpp
+    data/databasemanager.cpp \
+    gui/forms/mainfrm.cpp
 
 HEADERS += \
     qtimplement/qtestcase.h \
@@ -57,4 +58,8 @@ HEADERS += \
     gui/ctestsuiteviewmodel.h \
     gui/treenode.h \
     data/testkeeper.h \
-    data/databasemanager.h
+    data/databasemanager.h \
+    gui/forms/mainfrm.h
+
+FORMS += \
+    gui/forms/mainfrm.ui
