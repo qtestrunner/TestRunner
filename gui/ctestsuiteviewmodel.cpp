@@ -1,59 +1,55 @@
 #include "ctestsuiteviewmodel.h"
+#include <QDebug>
 
-CTestSuiteViewModel::CTestSuiteViewModel(QList<IFilePtr>& filelist, QObject *parent):
+CTestSuiteViewModel::CTestSuiteViewModel(const QList<IFilePtr>& filelist, QObject *parent):
     QAbstractItemModel(parent)
 {
-//    foreach(IFilePtr file, filelist){
-//        m_testsuites << file->getTestSuites();
-//    }
+	m_files = filelist;
     m_rootNode = new TreeNode;
-    foreach(IFilePtr file, filelist){
+	foreach(const IFilePtr & file, m_files){
 
-        foreach(ITestSuitePtr testsuite, file->getTestSuites()){
-            TreeNode* suiteNode = m_rootNode->addChildNode( (void*)testsuite.data());
+		foreach(const ITestSuitePtr & testsuite, file->getTestSuites()){
+			TreeNode* suiteNode = m_rootNode->addChildNode(testsuite.data());
 
-            foreach(ITestCasePtr testcase, testsuite->getCases()){
-                TreeNode* caseNode = suiteNode->addChildNode( (void*)testcase.data());
+			foreach(const ITestCasePtr & testcase, testsuite->getCases()){
+				TreeNode* caseNode = suiteNode->addChildNode(testcase.data());
 
                 if (testcase->hasDataTags()){
-                    foreach(QString datatag, testcase->getAllDataTags()){
-                        caseNode->addChildNode( (void*)datatag.toAscii().data());
+					foreach(const QString & datatag, testcase->getAllDataTags()){
+						caseNode->addChildNode((void*)&datatag);
                     }
                 }
             }
         }
     }
-
 }
 
 Qt::ItemFlags CTestSuiteViewModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
+	if (index == QModelIndex())
         return 0;
 
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-
-QModelIndex CTestSuiteViewModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex CTestSuiteViewModel::index(int row, int /*column*/, const QModelIndex &parent) const
 {
-    if (!parent.isValid()){
-
-        return createIndex(row, column, m_rootNode->getChildList().at(row));
-    }
-    else {
-        const TreeNode* parentnode = reinterpret_cast<const TreeNode*>(parent.internalPointer());
-        return createIndex(row, column, parentnode->getChildList().at(row));
-    }
+	if (parent == QModelIndex())
+		return createIndex(row, 0,(void*) m_rootNode->getChildList().at(row));
+	else
+	{
+		const TreeNode* parentnode = reinterpret_cast<const TreeNode*>(parent.internalPointer());
+		return createIndex(row, 0, parentnode->getChildList().at(row));
+	}
+	return QModelIndex();
 }
 
-int CTestSuiteViewModel::rowCount (const QModelIndex &parent) const {
-    if (!parent.isValid()) {
-        return m_rootNode->getChildList().size();
-    }
-    else {
-        return reinterpret_cast<TreeNode*>(parent.internalPointer())->getChildList().size();
-    }
+int CTestSuiteViewModel::rowCount (const QModelIndex &parent) const
+{
+	if (parent == QModelIndex())
+		return  m_rootNode->getChildList().count();
+
+	return reinterpret_cast<TreeNode*>(parent.internalPointer())->getChildList().count();
 }
 
 int CTestSuiteViewModel::columnCount (const QModelIndex &parent) const {
@@ -61,39 +57,33 @@ int CTestSuiteViewModel::columnCount (const QModelIndex &parent) const {
     return 1;
 }
 
-QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const {
-    if (index.isValid() && role == Qt::DisplayRole){
+QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const
+{
+	if (index != QModelIndex() && role == Qt::DisplayRole){
         const TreeNode* node = reinterpret_cast<const TreeNode*>(index.internalPointer());
-
-        switch((int)node->getType()){
+		switch(node->getType())
+		{
         case TreeNode::TESTSUITE:
-            return (QString)reinterpret_cast<ITestSuite*>(node->getItem())->getName();
+			return reinterpret_cast<ITestSuite*>(node->getItem())->getName();
         case TreeNode::TESTCASE:
-            return (QString)reinterpret_cast<ITestCase*>(node->getItem())->getName();
+			return reinterpret_cast<ITestCase*>(node->getItem())->getName();
+		case TreeNode::DATATAG:
+			return *reinterpret_cast<const QString*>(node->getItem());
         }
-
     }
-
     return QVariant();
 }
 
-QModelIndex CTestSuiteViewModel::parent (const QModelIndex &child) const {
-    if (child.isValid()){
+QModelIndex CTestSuiteViewModel::parent (const QModelIndex &child) const
+{
+	if (child != QModelIndex())
+	{
         TreeNode* node = reinterpret_cast<TreeNode*>(child.internalPointer());
-        switch(node->getType()){
-        case TreeNode::TESTSUITE:
-            return QModelIndex();
-        case TreeNode::TESTCASE:
-            return index(m_rootNode->getChildList().indexOf(node->parent()), 0);
-        case TreeNode::DATATAG:
-            return index(node->parent()->getChildList().indexOf(node->parent()), 0, index(m_rootNode->getChildList().indexOf(node->parent()->parent()), 0));
-        default:
-            Q_ASSERT_X(false, "WTF?","ViacheslavL");
-        }
+		if (m_rootNode == node->parent())
+			return QModelIndex();
+		else
+			return createIndex(node->parent()->parent()->getChildList().indexOf(node->parent()),0, node->parent());
     }
     return QModelIndex();
 }
 
-QModelIndex CTestSuiteViewModel::getRootIndex(){
-    return createIndex(-1, -1,(void*) m_rootNode);
-}

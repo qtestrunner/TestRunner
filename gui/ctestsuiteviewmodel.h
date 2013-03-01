@@ -2,6 +2,7 @@
 #define CTESTSUITEVIEWMODEL_H
 
 #include <QAbstractItemModel>
+#include <QHash>
 #include <interfaces/ifile.h>
 #include "treenode.h"
 
@@ -9,7 +10,7 @@ class CTestSuiteViewModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit CTestSuiteViewModel (QList<IFilePtr>& filelist, QObject *parent = 0);
+	explicit CTestSuiteViewModel (const QList<IFilePtr> &filelist, QObject *parent = 0);
 
     int columnCount (const QModelIndex &parent = QModelIndex()) const;
 
@@ -23,13 +24,12 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    QModelIndex getRootIndex();
 signals:
     
 public slots:
 
 private:
-    QList<ITestSuitePtr> m_testsuites;
+	QList<IFilePtr> m_files;
     TreeNode* m_rootNode;
 };
 
