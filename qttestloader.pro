@@ -4,18 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core
-QT       += sql
+QT       += core sql gui
 
-QT       += gui
-
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = qttestloader
-CONFIG   += console
-CONFIG   -= app_bundle
-
 TEMPLATE = app
-
 
 SOURCES += main.cpp \
     qtimplement/qtestcase.cpp \

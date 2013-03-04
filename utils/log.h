@@ -3,6 +3,8 @@
 
 #include <QDebug>
 
+//If you need to see log in gui, temporary you may run app from terminal
+
 //TODO use different log fuctions
 #ifdef QT_DEBUG
 	#define DEBUG(X) qDebug() << X

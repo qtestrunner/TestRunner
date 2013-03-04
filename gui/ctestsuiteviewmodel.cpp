@@ -35,11 +35,17 @@ Qt::ItemFlags CTestSuiteViewModel::flags(const QModelIndex &index) const
 QModelIndex CTestSuiteViewModel::index(int row, int /*column*/, const QModelIndex &parent) const
 {
 	if (parent == QModelIndex())
-		return createIndex(row, 0,(void*) m_rootNode->getChildList().at(row));
+		if (!m_rootNode->getChildList().isEmpty())
+			return createIndex(row, 0,(void*) m_rootNode->getChildList().at(row));
+		else
+			return QModelIndex();
 	else
 	{
 		const TreeNode* parentnode = reinterpret_cast<const TreeNode*>(parent.internalPointer());
-		return createIndex(row, 0, parentnode->getChildList().at(row));
+		if (!parentnode->getChildList().isEmpty())
+			return createIndex(row, 0, parentnode->getChildList().at(row));
+		else
+			return QModelIndex();
 	}
 	return QModelIndex();
 }
