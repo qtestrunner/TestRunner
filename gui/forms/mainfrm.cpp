@@ -11,7 +11,6 @@
 MainFrm::MainFrm(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainFrm)
-	, m_suitesmodel(m_testfiles, this)
 {
 	ui->setupUi(this);
 	QStringList args(QCoreApplication::arguments());
@@ -23,7 +22,7 @@ MainFrm::MainFrm(QWidget *parent)
 
 	ui->fileMaskEdit->setText(args.at(2));
 	ui->folderEdit->setText(args.at(1));
-	ui->suitesView->setModel(&m_suitesmodel);
+
 }
 
 MainFrm::~MainFrm()
@@ -36,6 +35,9 @@ void MainFrm::on_tempLoadButton_clicked()
 	QStringList masks;
 	masks << ui->fileMaskEdit->text();
 	TestScaner::loadFolder(ui->folderEdit->text(), masks, m_testfiles);
+	QSharedPointer<CTestSuiteViewModel> model(new CTestSuiteViewModel(m_testfiles, this));
+	ui->suitesView->setModel(model.data());
+	m_suitesmodel.swap(model);
 }
 
 void MainFrm::on_tempRunButton_clicked()
@@ -44,6 +46,4 @@ void MainFrm::on_tempRunButton_clicked()
 		file->run(m_results);
 
 	TestKeeper::saveSuites(m_results);
-	//ui->suitesView->layout()-
-
 }

@@ -26,7 +26,7 @@ private:
 	Ui::MainFrm *ui;
 	QList<TestSuiteResult> m_results;//temp
 	QList<IFilePtr> m_testfiles;//temp
-	CTestSuiteViewModel m_suitesmodel;//temp
+	QSharedPointer<CTestSuiteViewModel> m_suitesmodel;//temp
 };
 
 #endif // MAINFRM_H
