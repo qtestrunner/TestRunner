@@ -22,11 +22,13 @@ private slots:
 
 	void on_tempRunButton_clicked();
 
+
 private:
 	Ui::MainFrm *ui;
 	QList<TestSuiteResult> m_results;//temp
 	QList<IFilePtr> m_testfiles;//temp
 	QSharedPointer<CTestSuiteViewModel> m_suitesmodel;//temp
+
 };
 
 #endif // MAINFRM_H

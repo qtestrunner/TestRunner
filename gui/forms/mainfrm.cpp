@@ -7,7 +7,6 @@
 #include "data/testkeeper.h"
 //#include "data/testresults.h"
 
-
 MainFrm::MainFrm(QWidget *parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainFrm)
@@ -47,3 +46,4 @@ void MainFrm::on_tempRunButton_clicked()
 
 	TestKeeper::saveSuites(m_results);
 }
+

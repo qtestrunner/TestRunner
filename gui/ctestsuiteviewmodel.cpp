@@ -28,8 +28,7 @@ Qt::ItemFlags CTestSuiteViewModel::flags(const QModelIndex &index) const
 {
 	if (index == QModelIndex())
         return 0;
-
-	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
 }
 
 QModelIndex CTestSuiteViewModel::index(int row, int /*column*/, const QModelIndex &parent) const
@@ -65,7 +64,25 @@ int CTestSuiteViewModel::columnCount (const QModelIndex &parent) const {
 
 QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const
 {
-	if (index != QModelIndex() && role == Qt::DisplayRole){
+	if (role == Qt::CheckStateRole)
+	{
+		TreeNode* node = reinterpret_cast<TreeNode*>(index.internalPointer());
+		switch(node->getType())
+		{
+		case TreeNode::TESTSUITE:
+			if (reinterpret_cast<ITestSuite*>(node->getItem())->isRunnable())
+				return Qt::Checked; else Qt::Unchecked;
+		case TreeNode::TESTCASE:
+			if (reinterpret_cast<ITestCase*>(node->getItem())->isRunnable())
+				return Qt::Checked; else Qt::Unchecked;
+		case TreeNode::DATATAG:
+			ITestCase * caseItem = reinterpret_cast<ITestCase*>(node->parent()->getItem());
+			QString tag = *reinterpret_cast<const QString*>(node->getItem());
+			if (caseItem->runnableDataTags().contains(tag))
+				return Qt::Checked; else Qt::Unchecked;
+		}
+	}
+	else if (index != QModelIndex() && role == Qt::DisplayRole){
         const TreeNode* node = reinterpret_cast<const TreeNode*>(index.internalPointer());
 		switch(node->getType())
 		{
@@ -77,7 +94,38 @@ QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const
 			return *reinterpret_cast<const QString*>(node->getItem());
         }
     }
-    return QVariant();
+	return QVariant();
+}
+
+bool CTestSuiteViewModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (index != QModelIndex() && role == Qt::CheckStateRole)
+	{
+		bool runnable;
+		if (value == Qt::Checked)
+			runnable = true; else runnable = false;
+		TreeNode* node = reinterpret_cast<TreeNode*>(index.internalPointer());
+		switch(node->getType())
+		{
+		case TreeNode::TESTSUITE:
+			reinterpret_cast<ITestSuite*>(node->getItem())->setRunnable(runnable);
+
+			break;
+		case TreeNode::TESTCASE:
+//			if (reinterpret_cast<ITestCase*>(node->getItem())->isRunnable())
+//				return Qt::Checked; else Qt::Unchecked;
+			break;
+		case TreeNode::DATATAG:
+//			ITestCase * caseItem = reinterpret_cast<ITestCase*>(node->parent()->getItem());
+//			QString tag = *reinterpret_cast<const QString*>(node->getItem());
+//			if (caseItem->runnableDataTags().contains(tag))
+//				return Qt::Checked; else Qt::Unchecked;
+			break;
+		}
+
+
+	}
+	return false;
 }
 
 QModelIndex CTestSuiteViewModel::parent (const QModelIndex &child) const
