@@ -14,6 +14,7 @@ QTestCase::QTestCase(const QString & name)
 void QTestCase::setDataTags(const QList<QString> & datatags)
 {
 	m_datatags = datatags;
+	m_runnabletags = datatags;
 }
 
 //------------------------------------------------------------------------------
@@ -41,16 +42,16 @@ void QTestCase::setRunnableDataTags(const QList<QString> & tags)
 	{
 		if (m_datatags.contains(tag))
 			m_runnabletags.push_back(tag);
-
 	}
+	if (m_runnabletags.isEmpty())
+		m_runnable = false;
+	else
+		m_runnable = true;
 }
 
 const QList<QString> QTestCase::runnableDataTags()
 {
-	if (m_runnabletags.isEmpty())
-		return m_datatags;
-	else
-		return m_runnabletags;
+	return m_runnabletags;
 }
 
 //------------------------------------------------------------------------------

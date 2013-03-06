@@ -1,5 +1,6 @@
 #include "ctestsuiteviewmodel.h"
 #include <QDebug>
+#include <QStringList>
 
 CTestSuiteViewModel::CTestSuiteViewModel(const QList<IFilePtr>& filelist, QObject *parent):
     QAbstractItemModel(parent)
@@ -71,15 +72,15 @@ QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const
 		{
 		case TreeNode::TESTSUITE:
 			if (reinterpret_cast<ITestSuite*>(node->getItem())->isRunnable())
-				return Qt::Checked; else Qt::Unchecked;
+				return Qt::Checked; else return Qt::Unchecked;
 		case TreeNode::TESTCASE:
 			if (reinterpret_cast<ITestCase*>(node->getItem())->isRunnable())
-				return Qt::Checked; else Qt::Unchecked;
+				return Qt::Checked; else return Qt::Unchecked;
 		case TreeNode::DATATAG:
 			ITestCase * caseItem = reinterpret_cast<ITestCase*>(node->parent()->getItem());
 			QString tag = *reinterpret_cast<const QString*>(node->getItem());
 			if (caseItem->runnableDataTags().contains(tag))
-				return Qt::Checked; else Qt::Unchecked;
+				return Qt::Checked; else return Qt::Unchecked;
 		}
 	}
 	else if (index != QModelIndex() && role == Qt::DisplayRole){
@@ -92,6 +93,9 @@ QVariant CTestSuiteViewModel::data (const QModelIndex &index, int role) const
 			return reinterpret_cast<ITestCase*>(node->getItem())->getName();
 		case TreeNode::DATATAG:
 			return *reinterpret_cast<const QString*>(node->getItem());
+		default:
+			Q_ASSERT(false);
+			return QVariant();
         }
     }
 	return QVariant();
@@ -109,21 +113,27 @@ bool CTestSuiteViewModel::setData(const QModelIndex &index, const QVariant &valu
 		{
 		case TreeNode::TESTSUITE:
 			reinterpret_cast<ITestSuite*>(node->getItem())->setRunnable(runnable);
-
 			break;
 		case TreeNode::TESTCASE:
-//			if (reinterpret_cast<ITestCase*>(node->getItem())->isRunnable())
-//				return Qt::Checked; else Qt::Unchecked;
+			reinterpret_cast<ITestCase*>(node->getItem())->setRunnable(runnable);
 			break;
 		case TreeNode::DATATAG:
-//			ITestCase * caseItem = reinterpret_cast<ITestCase*>(node->parent()->getItem());
-//			QString tag = *reinterpret_cast<const QString*>(node->getItem());
-//			if (caseItem->runnableDataTags().contains(tag))
-//				return Qt::Checked; else Qt::Unchecked;
+			ITestCase * caseItem = reinterpret_cast<ITestCase*>(node->parent()->getItem());
+			QString tag = *reinterpret_cast<const QString*>(node->getItem());
+			QStringList tags(caseItem->runnableDataTags());
+			if (runnable)
+				tags << tag;
+			else
+				tags.removeOne(tag);
+			caseItem->setRunnableDataTags(tags);
+
+			QModelIndex pindex = parent(index);
+			emit dataChanged(pindex, pindex);
+
 			break;
 		}
-
-
+		emit dataChanged(index, index);
+		return true;
 	}
 	return false;
 }

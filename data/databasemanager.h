@@ -16,17 +16,14 @@ public:
 
 	static DatabaseManager & instance();
 	QSqlDatabase db;
+
 private:
 	friend class TestKeeper;
 	static void getSuitesModel(QSharedPointer<QSqlTableModel> & ptr);
 	static void getCasesModel(QSharedPointer<QSqlTableModel> & ptr);
 	static void getIncidentsModel(QSharedPointer<QSqlTableModel> & ptr);
 	int getMaxId(const QString & table_name);
-signals:
-	
-public slots:
 
-private:
 	enum State
 	{
 		StateNon,
