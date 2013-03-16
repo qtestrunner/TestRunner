@@ -27,12 +27,12 @@ ITestLoader::Result GTest_Loader::loadFile(const QString &file_name, IFilePtr &f
         // if there is no spaces - than it is testsuitename
         if (line[0] != ' '){
             google_suite = ITestSuitePtr(new GTest_TestSuite);
-            google_suite->setName(line.remove(line.length()-1, 1)); // remove dot at the end of line
+            google_suite->setName(line.remove(QRegExp("[.]|\n"))); // remove dot and \n at the end of line
             gtest_suites.push_back(google_suite);
         }
         else{
             // this removes first two spaces
-            testcase = ITestCasePtr(new GTest_TestCase(line.remove(0, 2)));
+            testcase = ITestCasePtr(new GTest_TestCase(line.remove(QRegExp("\n|[ ]"))));
             google_suite->addTestCase(testcase);
         }
     }
